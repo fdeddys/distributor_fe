@@ -1,0 +1,97 @@
+<div class="card border-primary">
+    <div class="card-body">
+        <h5 class="card-title">{{moduleTitle}}</h5>
+        <!-- SEARCH -->
+        <div>
+            <form>
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="date1">Filter</label>
+                        
+                        <div>
+                            <span style="margin-right: 20px;margin-left: 1px;">PS No.</span>
+                            <input style="width: 100px;"  type="text" id="psno" 
+                                [(ngModel)]='searchTerm.paymentNo'
+                                name="psno" >
+
+                            <span style="margin-right: 20px;margin-left: 1px;">Order Date : </span>
+                            <input type="text" ngbDatepicker #d="ngbDatepicker" 
+                                readonly [(ngModel)]="dateStart" 
+                                [ngModelOptions]="{standalone: true}"/>
+                            <button (click)="d.toggle()">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+
+                            <span style="margin-right: 20px;margin-left: 20px;">s/d</span>
+                            
+                            <input type="text" ngbDatepicker #d2="ngbDatepicker" 
+                                readonly [(ngModel)]="dateEnd" 
+                                [ngModelOptions]="{standalone: true}"/>
+                                <button (click)="d2.toggle()">
+                                    <i class="fa fa-calendar"></i>
+                                </button>
+
+                            <span style="margin-right: 20px;margin-left: 20px;">Payment Status :</span>
+                            
+                            <select [(ngModel)]="statusSelected" style="width: 100px;" [ngModelOptions]="{standalone: true}">
+                                <option *ngFor="let status of statuses" [value]="status.code">
+                                    {{status.desc}}
+                                </option>
+                            </select>
+                                <!-- {{statusSelected}} -->
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" (click)="onFilter()" class="btn mr-2 btn-outline-success btn-sm">Search <i
+                            class="fa fa-search fa-lg"></i></button>
+                    <button type="button" (click)="resetFilter()" class="btn mr-2 btn-outline-danger btn-sm">Reset <i
+                            class="fa fa-refresh fa-lg"></i></button>
+                    <button type="button" class="btn btn-outline-primary btn-sm" (click)="addNew()">Addnew
+                        <i class="fa fa-plus-circle fa-lg"></i></button>
+                </div>
+
+            </form>
+        </div
+        >
+        <br>
+        <div style="height:400px; padding: 15px 15px 15px 15px; ">
+            <table class="table table-sm table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th scope="col">Payment Reff</th>
+                        <th scope="col">Payment No.</th>
+                        <th scope="col" class='centerText' >Date</th>
+                        <th scope="col" class='centerText' >Status</th>
+                        <th scope="col" class='rightText' >Total</th>
+                        <th scope="col" class='centerText'>Update by</th>
+                        <th scope="col" class='rightText' >Last Update</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let paymentSupplier of paymentSuppliers">
+                        <td>
+                            <button type="button" (click)="edit(paymentSupplier.id)" class="btn btn-outline-warning btn-sm">
+                                <i class="fa fa-list fa-lg"></i>
+                            </button>
+                        </td>
+                        <td>{{paymentSupplier.paymentReff}}</td>
+                        <td>{{paymentSupplier.paymentNo}}</td>
+                        <!-- <td class='centerText' >{{paymentSupplier.paymentDate | date:'dd-MMM-yyyy'}}</td> -->
+                        <td class='centerText' >{{ getDate(paymentSupplier) }}</td>
+                        <td class='centerText' >{{getStatus(paymentSupplier.status)}} </td>
+                        <td class='rightText'>{{paymentSupplier.total | number:'0.0-0' }}</td>
+                        <td class='rightText'>{{paymentSupplier.lastUpdateBy  }}</td>
+                        <td class='rightText'>{{paymentSupplier.lastUpdate | date:'dd-MMM-yyyy' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <ngb-pagination size="sm" [collectionSize]="totalData" [(page)]="curPage" [maxSize]="totalRecord"
+            (pageChange)="loadPage()" [boundaryLinks]="true">
+        </ngb-pagination>
+    </div>
+
+</div>

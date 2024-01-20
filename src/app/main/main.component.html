@@ -1,0 +1,178 @@
+<!-- <div class="nav-side-menu" >
+    <div class="brand">
+        <img src="assets/images/logo_ottopay_white_v1.0.png" style="height: 100px; margin-left: 50px; margin-right: 90px">
+    </div>
+    <br>
+
+    <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+    <div class="menu-list">
+        <ul id="menu-content" class="menu-content collapse out">
+            <li>
+                <a><i class="fa fa-check fa-lg"></i> Verifier</a>
+            </li>
+            <li>
+                <a><i class="fa fa-thumbs-up fa-lg"></i> Eform Approval</a>
+            </li>
+            <li>
+                <a><i class="fa fa-exclamation fa-lg"></i> EDD Approval</a>
+            </li>
+            
+            <li data-toggle="collapse" data-target="#wm" class="collapsed">
+                <a (click)="isCollapsedWM = !isCollapsedWM"
+                [attr.aria-expanded]="!isCollapsedWM"><i class="fa fa-tv fa-lg" ></i>Workflow Monitoring <span class="arrow"></span></a>
+            </li>
+            <div id="collapseExample" [ngbCollapse]="isCollapsedWM">
+                <ul class="sub-menu " id="wm">
+                    <li><a>Report 1</a></li>
+                    <li><a>Report 2</a></li>
+                </ul>
+            </div>
+
+            <li data-toggle="collapse" data-target="#mm" class="collapsed">
+                <a (click)="isCollapsedMM = !isCollapsedMM"
+                [attr.aria-expanded]="!isCollapsedMM"><i class="fa fa-wrench fa-lg" ></i> Merchant Maintenance <span class="arrow"></span></a>
+            </li>
+            <div id="collapseExample" [ngbCollapse]="isCollapsedMM">
+                <ul class="sub-menu " id="mm">
+                    <li><a>Report 1</a></li>
+                    <li><a>Report 2</a></li>
+                </ul>
+            </div>
+
+            <li data-toggle="collapse" data-target="#report" class="collapsed">
+                <a (click)="isCollapsedReport = !isCollapsedReport"
+                [attr.aria-expanded]="!isCollapsedReport"><i class="fa fa-gift fa-lg" ></i> Report <span class="arrow"></span></a>
+            </li>
+            <div id="collapseExample" [ngbCollapse]="isCollapsedReport">
+                <ul class="sub-menu " id="report">
+                    <li><a>Report 1</a></li>
+                    <li><a>Report 2</a></li>
+                </ul>
+            </div>
+
+            <li data-toggle="collapse" data-target="#products" class="collapsed">
+                <a (click)="isCollapsedTask = !isCollapsedTask"
+                [attr.aria-expanded]="!isCollapsedTask"><i class="fa fa-tasks fa-lg" ></i> My Task <span class="arrow"></span></a>
+            </li>
+            <div id="collapseExample" [ngbCollapse]="isCollapsedTask">
+                <ul class="sub-menu " id="products">
+                    <li><a>Task 1</a></li>
+                    <li><a>Task 2</a></li>
+                </ul>
+            </div>
+
+            <li>
+                <a><i class="fa fa-dashboard fa-lg"></i> View Activity </a>
+            </li>
+
+            <li data-toggle="collapse" data-target="#products" class="collapsed">
+                <a (click)="isCollapsed = !isCollapsed"
+                [attr.aria-expanded]="!collapseExample"><i class="fa fa-user fa-lg" ></i> System Administration <span class="arrow"></span></a>
+            </li>
+            <div id="collapseExample" [ngbCollapse]="isCollapsed">
+                <ul class="sub-menu " id="products">
+                    <li class="active"><a href="#">Testing</a></li>
+                    <li><a href="#/main/teroris">Teroris</a></li>
+                </ul>
+            </div>
+
+            <li data-toggle="collapse" data-target="#secMain" class="collapsed">
+                <a (click)="isCollapsedSecMain = !isCollapsedSecMain"
+                [attr.aria-expanded]="!isCollapsedSecMain"><i class="fa fa-user-secret fa-lg" ></i> Security Administration <span class="arrow"></span></a>
+            </li>
+            <div id="collapseExample" [ngbCollapse]="isCollapsedSecMain">
+                <ul class="sub-menu " id="products">
+                    <li><a >Menu 1</a></li>
+                    <li><a >Menu 2</a></li>
+                </ul>
+            </div>
+            
+        </ul>
+    </div>
+</div>  -->
+
+
+
+
+<op-navigation></op-navigation> 
+<op-sidebar></op-sidebar>
+<div class="container-fluid" id="main">
+        
+    <div class="row" style="padding:10px 10px 10px 10px">
+            <!-- <op-navigation></op-navigation> -->
+        <div class="col-md-12" >
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div> 
+
+<!-- Start Sidebar -->
+<!-- <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#">
+      <img src="https://v4-alpha.getbootstrap.com/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+      <span class="menu-collapsed">DMT</span>
+    </a>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        
+        <li class="nav-item dropdown d-sm-block d-md-none">
+          <a class="nav-link dropdown-toggle" href="#" id="smallerscreenmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Menu
+          </a>
+          <div class="dropdown-menu" aria-labelledby="smallerscreenmenu">
+              <a class="dropdown-item" href="#">Dashboard</a>
+              <a class="dropdown-item" href="#">Profile</a>
+          </div>
+        </li>
+        
+      </ul>
+    </div>
+  </nav>
+  
+  
+  <div class="row" id="body-row">
+      <div id="sidebar-container" class="sidebar-expanded d-none d-md-block">
+          <ul class="list-group">
+              <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+                  <small>MAIN MENU</small>
+              </li>
+              <a href="#submenu1" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+                  <div class="d-flex w-100 justify-content-start align-items-center">
+                      <span class="fa fa-dashboard fa-fw mr-3"></span>
+                      <span class="menu-collapsed">Dashboard</span>
+                      <span class="submenu-icon ml-auto"></span>
+                  </div>
+              </a>
+              <div id='submenu1' class="collapse sidebar-submenu">
+                  <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                      <span class="menu-collapsed">Charts</span>
+                  </a>
+                  <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                      <span class="menu-collapsed">Reports</span>
+                  </a>
+                  <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                      <span class="menu-collapsed">Tables</span>
+                  </a>
+              </div>
+              <a href="#submenu2" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+                  <div class="d-flex w-100 justify-content-start align-items-center">
+                      <span class="fa fa-user fa-fw mr-3"></span>
+                      <span class="menu-collapsed">Profile</span>
+                      <span class="submenu-icon ml-auto"></span>
+                  </div>
+              </a>
+              <div id='submenu2' class="collapse sidebar-submenu">
+                  <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                      <span class="menu-collapsed">Settings</span>
+                  </a>
+                  <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                      <span class="menu-collapsed">Password</span>
+                  </a>
+              </div>            
+             
+          </ul>
+      </div> 
+  </div> -->

@@ -1,0 +1,128 @@
+<div class="nav-side-menu" >
+        <div class="brand">
+            <img src="assets/images/logo_bg_putih.png" style="height: 150px; margin-top: 10px; margin-bottom: 10px;">
+            <br>
+        </div>
+          
+        <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+        <div class="menu-list">
+            <ul id="menu-content" class="menu-content collapse out">
+                <!-- <li>
+                    <a href="#/main/verifier"><i class="fa fa-check fa-lg"></i> Verifier</a>
+                </li>
+                <li>
+                    <a href="#/main/eform"><i class="fa fa-thumbs-up fa-lg"></i> Eform Approval</a>
+                </li>
+                <li>
+                    <a href="#/main/edd"><i class="fa fa-exclamation fa-lg"></i> EDD Approval</a>
+                </li>
+                
+                <li data-toggle="collapse" data-target="#wm" class="collapsed">
+                    <a (click)="isCollapsedWM = !isCollapsedWM"
+                    [attr.aria-expanded]="!isCollapsedWM"><i class="fa fa-tv fa-lg" ></i> Workflow Monitoring <span class="arrow"></span></a>
+                </li>
+                <div id="collapseExample" [ngbCollapse]="!isCollapsedWM">
+                    <ul class="sub-menu " id="wm">
+                        <li><a href="#/main/work-in-progress">Work in progress</a></li>
+                    </ul>
+                </div>
+    
+                <li data-toggle="collapse" data-target="#mm" class="collapsed">
+                    <a (click)="isCollapsedMM = !isCollapsedMM"
+                    [attr.aria-expanded]="!isCollapsedMM"><i class="fa fa-wrench fa-lg" ></i> Merchant Maintenance <span class="arrow"></span></a>
+                </li>
+                <div id="collapseExample" [ngbCollapse]="!isCollapsedMM">
+                    <ul class="sub-menu " id="mm">
+                        <li><a href="#/main/merchantGroup">Merchant Group</a></li>
+                        <li><a href="#/main/merchant">Merchant</a></li>
+                    </ul>
+                </div>
+    
+                <li data-toggle="collapse" data-target="#report" class="collapsed">
+                    <a (click)="isCollapsedReport = !isCollapsedReport"
+                    [attr.aria-expanded]="!isCollapsedReport"><i class="fa fa-gift fa-lg" ></i> Report <span class="arrow"></span></a>
+                </li>
+                <div id="collapseExample" [ngbCollapse]="!isCollapsedReport">
+                    <ul class="sub-menu " id="report">
+                        <li><a>Report 1</a></li>
+                        <li><a>Report 2</a></li>
+                    </ul>
+                </div>
+    
+                <li data-toggle="collapse" data-target="#products" class="collapsed">
+                    <a (click)="isCollapsedTask = !isCollapsedTask"
+                    [attr.aria-expanded]="!isCollapsedTask"><i class="fa fa-tasks fa-lg" ></i> My Task <span class="arrow"></span></a>
+                </li>
+                <div id="collapseExample" [ngbCollapse]="!isCollapsedTask">
+                    <ul class="sub-menu " id="products">
+                        <li><a href="#/main/masterDataApproval">Master Data Approval</a></li>
+                    </ul>
+                </div>
+    
+                <li>
+                    <a><i class="fa fa-dashboard fa-lg"></i> View Activity </a>
+                </li>
+    
+                <li data-toggle="collapse" data-target="#products" class="collapsed">
+                    <a (click)="isCollapsed = !isCollapsed"
+                    [attr.aria-expanded]="!collapseExample"><i class="fa fa-user fa-lg" ></i> System Administration <span class="arrow"></span></a>
+                </li>
+                <div id="collapseExample" [ngbCollapse]="!isCollapsed">
+                    <ul class="sub-menu " id="products">
+                        <li><a href="#/main/system-parameter" >System Parameter</a></li>
+                        <li><a href="#/main/teroris">Teroris</a></li>
+                        <li><a href="#/main/region">Region</a></li>
+                        <li><a href="#/main/lookup-group">Reference</a></li>
+                        <li data-toggle="collapse" data-target="#products" class="collapsed">
+                            <a (click)="isCollapsedRiksProfiler = !isCollapsedRiksProfiler"
+                            [attr.aria-expanded]="!isCollapsedRiksProfiler">Risk Profiler <span class="arrow"></span></a>
+                        </li>
+                        <div id="collapseExample" [ngbCollapse]="!isCollapsedRiksProfiler" style="margin-left:10px;">
+                            <ul class="sub-menu " id="products">
+                                <li><a href="#/main/lookup/risk-profiler/PEKERJAAN">Job</a></li>
+                                <li><a href="#/main/lookup/risk-profiler/JENIS_USAHA">Business Type</a></li>
+                            </ul>
+                        </div>
+                        <li><a >Holiday</a></li>
+                        <li><a href="#/main/apupt">APUPT</a></li>
+                        <li><a href="#/main/internal-name-risk">Internal Name Risk</a></li>
+                    </ul>
+                </div>
+    
+                <li data-toggle="collapse" data-target="#secMain" class="collapsed">
+                    <a (click)="isCollapsedSecMain = !isCollapsedSecMain"
+                    [attr.aria-expanded]="!isCollapsedSecMain"><i class="fa fa-user-secret fa-lg" ></i>  Administration <span class="arrow"></span></a>
+                </li>
+                <div id="collapseExample" [ngbCollapse]="!isCollapsedSecMain">
+                    <ul class="sub-menu " id="products">
+                        <li><a href="#/main/user">User</a></li>
+                        <li><a href="#/main/role">Role</a></li>
+                        <li><a >Security Parameter</a></li>
+                        <li><a href="#/main/access-matrix">Access Matrix</a></li>
+                    </ul>
+                </div> -->
+                
+                <op-tree-view [links]="links"></op-tree-view>
+    
+                <!-- <li data-toggle="collapse" data-target="#new" class="collapsed">
+                    <a href="#"><i class="fa fa-car fa-lg"></i> New <span class="arrow"></span></a>
+                </li>
+                <ul class="sub-menu " id="new">
+                    <li>New New 1</li>
+                    <li>New New 2</li>
+                    <li>New New 3</li>
+                </ul>
+                <li>
+                    <a href="#">
+                        <i class="fa fa-user fa-lg"></i> Profile
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fa fa-users fa-lg"></i> Users
+                    </a>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+    

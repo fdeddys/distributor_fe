@@ -1,0 +1,205 @@
+<div class="card border-primary">
+    <div class="card-body">
+        <h5 class="card-title" style="color: tomato;">Stock Opname</h5>
+
+        <div class="btn-group" role="group" *ngIf="stockOpname">
+            <button type="button" class="btn btn-outline-info btn-sm" (click)="addNew()">Add New
+                <i class="fa fa-plus-circle fa-lg"></i>
+            </button>
+            <button type="button" *ngIf="stockOpname.status === 0 || stockOpname.status === 10" class="btn btn-outline-success btn-sm" (click)="saveHdr('addnew', null)">Save
+                <i class="fa fa-save fa-lg"></i>
+            </button>
+            <button type="button"  *ngIf="stockOpname.status === 10" class="btn btn-outline-primary btn-sm" (click)="approve()">Submit
+                <i class="fa fa-thumbs-o-up fa-lg"></i>
+            </button>
+            <button type="button" *ngIf="stockOpname.status === 40 " class="btn btn-outline-warning btn-sm" (click)="preview('invoice')">Print
+                <i class="fa fa-print fa-lg"></i>
+            </button>
+            <button type="button" class="btn btn-outline-info btn-sm" (click)="backToLIst()">Back
+                <i class="fa fa-list fa-lg"></i>
+            </button>
+        </div>
+        <br>
+        <br>
+        <div *ngIf="stockOpname">
+            <table class="table table-sm table-striped">
+                <thead>
+                    <td style="width: 15%;"> </td>
+                    <td style="width: 35%;"> </td>
+                    <td style="width: 15%;"> </td>
+                    <td style="width: 35%;"> </td>
+                </thead>
+                <tbody style="color: cornflowerblue;">
+                    <tr>
+                        <td>Stock Opname No</td>
+                        <td><input type="text" readonly size="50%" [(ngModel)]="stockOpname.stockOpnameNo">
+                            [{{stockOpname.id}}]
+                        </td>
+                        <td>Total</td>
+                        <td>
+                            <span style="color: blue;">
+                                {{ stockOpname.Total | number:'0.0-0'}}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Date</td>
+                        <td>
+                            <input type="text" ngbDatepicker #d="ngbDatepicker" readonly [(ngModel)]="selectedDate" />
+                            <button (click)="d.toggle()">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </td>
+                        <td>Warehouse [ {{warehouseSelected}} ] </td>
+                        <td>
+                            <span *ngIf="warehouses" >
+                                <select id="select-type-basic" [(ngModel)]="warehouseSelected" style="width: 80%;"  class="form-control"  >
+                                    <option *ngFor="let warehouse of warehouses" [value]="warehouse.id" >
+                                    {{warehouse.name}}
+                                    </option>
+                                </select>
+                            </span>
+                        </td>
+                    </tr>       
+
+                    <tr>
+                        <td>Status</td>
+                        <td>
+                            {{getStatus(stockOpname.status)}}
+                            <!-- <input type="text" readonly size="50%" [(ngModel)]="stockOpname.status"> -->
+                        </td>
+                        <td>Note</td>
+                        <td rowspan="2"><textarea rows="3" size="100%" style="min-width: 90%" [(ngModel)]="stockOpname.note"></textarea>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Download</td>
+                        <td>
+                            <button type="button"  *ngIf="stockOpname.status === 0 || stockOpname.status === 10"  class="btn btn-outline-warning btn-sm" (click)="downloadTemplate()">
+                                Download template <i class="fa fa-download fa-lg"></i>
+                            </button>
+
+                            <!-- <button type="button" style="margin-left: 5px;" *ngIf="stockOpname.status === 0 || stockOpname.status === 10"  class="btn btn-outline-info btn-sm" (click)="downloadTemplate()">
+                                Upload<i class="fa fa-check fa-lg"></i>
+                            </button> -->
+                            <!-- <div class="form-group">
+                                <label for="file">Choose File</label>
+                                <input type="file"
+                                       id="file"
+                                       (click)="handleFileInput($event.target.files)">
+                            </div> -->
+                            <br>
+                            <br>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>                        
+                        <td>Upload</td>
+                        <td>
+                            
+                            <form name="myForm" #f="ngForm" (ngSubmit)="Upload(f)" >
+                                <input type="file" #inputFile (change)="onFileSelected($event)"   accept=".csv"  />
+                                <button type="submit"  *ngIf="stockOpname.status === 0 || stockOpname.status === 10"  class="btn btn-outline-danger btn-sm" > Process Upload <i class="fa fa-upload fa-lg"></i></button>
+                            </form>
+                        </td>
+                        <td></td>
+                        <td></td>
+
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        <div>
+            <table class="table table-sm table-striped">
+                <thead>
+                    <tr>
+                        <td style="width: 20%;">Product</td>
+                        <td style="width:  5%;">Qty</td>
+                        <td style="width:  5%;">Unit</td>
+                        <td style="width: 10%;">#</td>
+                    </tr>
+
+                </thead>
+                <tbody style="color: hotpink; background-color: ghostwhite;">
+                    <tr>
+                        <td>
+                            <input id="typeahead-http" type="text" [(ngModel)]="model" 
+                                [ngbTypeahead]="search"
+                                [resultFormatter]="formatterProdList" 
+                                [inputFormatter]="formatterProdInput" 
+                                placeholder="search product name" 
+                                (selectItem)="getItem($event)"
+                                size="50%"
+                                /> 
+                        </td>
+                        <td>
+                            <input type="number" [(ngModel)]="qty" placeholder="input qty" >
+                        </td>
+                        <td>
+                            <div *ngIf="uomAdded">
+                                {{model.smallUom.name}}
+
+                            </div>
+                            <!-- {{model | json}}                        -->
+                        </td>
+                        <td *ngIf ="stockOpname">
+                            <button type="button"  *ngIf="stockOpname.status === 0 || stockOpname.status === 10"  class="btn btn-outline-info btn-sm" (click)="addNewItem()">
+                                <i class="fa fa-check fa-lg"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="stockOpname">
+            <div style="height:350px; padding: 5px 15px 5px 15px; ">
+                <table class="table table-sm table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th *ngIf ="stockOpname" style="width: 5%;"></th>
+                            <th scope="col" style="width: 20%;">Product</th>
+                            <th scope="col" style="width: 10%;">Hpp</th>
+                            <th scope="col" style="width: 10%;">Qty Opname</th>
+                            <th scope="col" style="width: 10%;">Qty System</th>
+                            <th scope="col" style="width: 10%;">Diff</th>
+                            <th scope="col" style="width: 10%;">Unit</th>
+                            <th scope="col" style="width: 10%;">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let stockOpnameDetail of stockOpnameDetails">
+                            <td *ngIf ="stockOpname">
+                                <button type="button" *ngIf="stockOpname.status === 10"  (click)="confirmDelItem(stockOpnameDetail)" class="btn btn-outline-danger btn-sm">
+                                    <i class="fa fa-trash fa-lg"></i>
+                                </button>
+                                <!-- <button type="button" *ngIf="stockOpname.status === 20"  (click)="confirmUpdateItem(stockOpnameDetail)" class="btn btn-outline-danger btn-sm">
+                                    <i class="fa fa-check fa-lg"></i>
+                                </button> -->
+                            </td>
+                            <td>{{stockOpnameDetail.product.name}}</td>
+                            <td>{{stockOpnameDetail.hpp | number:'0.0-0' }}</td>
+                            <td>{{stockOpnameDetail.qty | number:'0.0-0' }}</td>
+                            <td>{{stockOpnameDetail.qtyOnSystem | number:'0.0-0' }}</td>
+                            <td>{{stockOpnameDetail.qty - stockOpnameDetail.qtyOnSystem | number:'0.0-0' }}</td>
+                            <td>{{stockOpnameDetail.uom.name}}</td>
+                            <td>{{ getTotal(stockOpnameDetail) | number:'0.0-0' }}  </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <ngb-pagination size="sm" [collectionSize]="totalData" [(page)]="curPage" [maxSize]="totalRecord"
+                (pageChange)="loadPage()" [boundaryLinks]="true">
+            </ngb-pagination>
+        </div>
+
+    </div>
+
+</div>

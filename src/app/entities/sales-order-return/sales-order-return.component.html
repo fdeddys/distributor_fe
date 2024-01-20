@@ -1,0 +1,67 @@
+<div class="card border-primary">
+    <div class="card-body">
+        <h5 class="card-title">Return Sales Order</h5>
+        <!-- SEARCH -->
+        <div>
+            <form>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label for="brandCodeInput">Return no</label>
+                        <input type="text" class="form-control" id="search_no" [(ngModel)]='searchTerm.no'
+                            name="searchCode" placeholder="Enter No">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="brandNameInput">Name</label>
+                        <input type="text" class="form-control" id="search_customer" [(ngModel)]='searchTerm.name'
+                            name="searchName" placeholder="Enter Name">
+                    </div>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" (click)="onFilter()" class="btn mr-2 btn-outline-success btn-sm">Search <i
+                            class="fa fa-search fa-lg"></i></button>
+                    <button type="button" (click)="resetFilter()" class="btn mr-2 btn-outline-danger btn-sm">Reset <i
+                            class="fa fa-refresh fa-lg"></i></button>
+                    <button type="button" class="btn btn-outline-primary btn-sm" (click)="addNew()">Addnew
+                        <i class="fa fa-plus-circle fa-lg"></i></button>
+                </div>
+
+            </form>
+        </div
+        >
+        <br>
+        <div style="height:400px; padding: 15px 15px 15px 15px; ">
+            <table class="table table-sm table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th scope="col">Return No</th>
+                        <th scope="col" class='centerText' >Date</th>
+                        <th scope="col">Customer</th>
+                        <th scope="col">Salesman</th>
+                        <th scope="col" class='centerText' >Status</th>
+                        <th scope="col" class='rightText' >Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let salesOrderReturn of salesOrderReturns">
+                        <td>
+                            <button type="button" (click)="open(salesOrderReturn)" class="btn btn-outline-warning btn-sm">
+                                <i class="fa fa-list fa-lg"></i>
+                            </button>
+                        </td>
+                        <td>{{salesOrderReturn.returnNo}}</td>
+                        <td class='centerText' >{{salesOrderReturn.returnDate | date:'dd-MMM-yyyy'}}</td>
+                        <td>{{salesOrderReturn.customer.name }}</td>
+                        <td>{{salesOrderReturn.salesman.userName}}</td>
+                        <td class='centerText' >{{getStatus(salesOrderReturn.status)}} </td>
+                        <td class='rightText'>{{salesOrderReturn.grandTotal | number:'0.0-0' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <ngb-pagination size="sm" [collectionSize]="totalData" [(page)]="curPage" [maxSize]="totalRecord"
+            (pageChange)="loadPage()" [boundaryLinks]="true">
+        </ngb-pagination>
+    </div>
+
+</div>

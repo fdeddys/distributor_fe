@@ -1,0 +1,168 @@
+<style>
+    input {
+        width: 100%;
+    }
+</style>
+<div class="modal-header" *ngIf="statusRec!=='View'">
+    <h4 class="modal-title">
+        <span class="badge badge-light" style="color:cornflowerblue">Product</span>
+    </h4>
+</div>
+<div class="modal-body">
+    <div *ngIf="product">
+
+
+        <table class="table table-sm table-striped">
+            <tr>
+                <th colspan="2">
+                    <button type="button" class="btn btn-outline-primary" style="color:green">
+                        Status <span class="badge badge-light" style="color:red"> {{statusRec}} </span>
+                        <span class="badge badge-light" style="color:purple"> {{viewMsg}}</span>
+                        <span class="sr-only">unread messages</span>
+                    </button>
+                </th>
+            </tr>
+            <tr>
+                <td>Code</td>
+                <td><input type="text" disabled size="50%" [(ngModel)]=product.code></td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td><input type="text" maxlength="250" size="50%" [(ngModel)]=product.name></td>
+            </tr>
+            <tr>
+                <td>Product Group</td>
+                <td>
+                    <select [(ngModel)]="productGroupSelected" class="form-control"
+                        [ngModelOptions]="{standalone: true}">
+                        <option *ngFor="let productGroup of productGroups" [value]="productGroup.id">
+                            {{productGroup.name}}
+                        </option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr *ngIf="showBrand">
+                <td>Brand {{showBrand}}</td>
+                <td>
+                    <select [(ngModel)]="brandSelected" class="form-control" [ngModelOptions]="{standalone: true}">
+                        <option *ngFor="let brand of brands" [value]="brand.id">
+                            {{brand.name}}
+                        </option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td>PLU</td>
+                <td><input type="text" maxlength="100" size="50%" [(ngModel)]=product.plu></td>
+            </tr>
+
+            <tr>
+                <td>Composition</td>
+                <td><input type="text" maxlength="100" size="50%" [(ngModel)]=product.composition></td>
+            </tr>
+
+            <tr>
+                <td>HPP</td>
+                <td>
+                    {{product.hpp | currency :'':'':'0.0-0'}}
+                </td>
+            </tr>
+
+           
+            <!-- <tr>
+            <td>Small Unit</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>Qty [small : Big unit]</td>
+            
+        </tr> -->
+            <tr>
+                <td>Big Unit</td>
+                <td>
+                    <div>
+                        <table>
+                            <tr>
+                                <td>
+                                    <label class="form-control">1</label>
+                                </td>
+                                <td>
+                                    <select [(ngModel)]="bigUomSelected" class="form-control"
+                                        [ngModelOptions]="{standalone: true}">
+                                        <option *ngFor="let bigUom of bigUoms" [value]="bigUom.id">
+                                            {{bigUom.name}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td> = </td>
+                                <td>
+                                    <input type="number" maxlength="250" size="50%" [(ngModel)]=product.qtyUom>
+                                </td>
+                                <td>
+                                    <select [(ngModel)]="smallUomSelected" class="form-control"
+                                        [ngModelOptions]="{standalone: true}">
+                                        <option *ngFor="let smallUom of smallUoms" [value]="smallUom.id">
+                                            {{smallUom.name}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <label class="form-control">[ Small Unit ]</label>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td>Sell Price [small unit]</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                <select [(ngModel)]="sellPriceTypeSelected" class="form-control" [ngModelOptions]="{standalone: true}">
+                                    <option *ngFor="let sellPriceType of sellPriceTypes" [value]="sellPriceType">
+                                        {{sellPriceType}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="number" maxlength="250" size="50%" [(ngModel)]=product.sellPrice>
+                            </td>
+                            <td>
+                                {{product.sellPrice | currency:'':'':'0.0'}}
+                                <!-- {{getSellPrice(product)}} -->
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Status</td>
+                <td>
+                    <select [(ngModel)]="statusSelected" class="form-control" [ngModelOptions]="{standalone: true}">
+                        <option *ngFor="let status of statuses" [value]="status">
+                            {{status}}
+                        </option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <div *ngIf="statusRec!=='View' ">
+        <button type="button" class="btn btn-outline-danger" (click)="save()">Save
+            <i class="fa fa-save fa-lg"></i>
+        </button>
+        <button type="button" class="btn btn-outline-dark" (click)="closeForm()">Close
+            <i class="fa fa-times fa-lg"></i>
+        </button>
+    </div>
+</div>

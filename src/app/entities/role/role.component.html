@@ -1,0 +1,74 @@
+<!-- <op-navigation></op-navigation> -->
+
+<div class="card border-primary">
+  <div class="card-body">
+      <h5 class="card-title">List Role</h5>
+    <div >
+       <!--  SEARCH -->
+       <form>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Nama</label>
+          <input type="email" class="form-control" 
+                  id="exampleInputEmail1" aria-describedby="emailHelp" 
+                  [(ngModel)]='searchTerm.name'
+                  name="searchName"
+                  placeholder="Enter Name">
+        </div>
+        <button type="submit" class="btn btn-outline-success btn-sm" (click)="onFilter()" >Search <i class="fa fa-search fa-lg"></i></button>
+      <button type="button" class="btn btn-outline-primary btn-sm" (click)="open('addnew', null)">Addnew
+        <i class="fa fa-plus-circle fa-lg"></i>
+      </button>
+      
+      </form>
+    </div>
+
+    <!-- <br>
+    <div class="btn-group" role="group" aria-label="Basic example">
+        
+        <button type="button" class="btn btn-outline-warning btn-sm">Preview
+            <i class="fa fa-search-plus fa-lg"></i> 
+        </button>
+        <button type="button" class="btn btn-outline-info btn-sm">Upload
+            <i class="fa fa-upload fa-lg"></i> 
+        </button>
+      </div>
+    <br> -->
+    <div style="height:400px; padding: 15px 15px 15px 15px; ">
+        <table class="table table-sm table-hover table-striped" >
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">is Super</th>
+                <th scope="col">type</th>
+                <th scope="col">Action</th>
+                <th ></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let role of roleList ">
+                <td>{{role.name}}</td>
+                <td>{{role.description}}</td>
+                <td>{{role.isSuper }}</td>
+                <td>{{role.type }}</td>
+                <td>
+                  <button type="button" 
+                    (click)="open('edit',role)"
+                      class="btn btn-outline-danger btn-sm">Edit
+                        <i class="fa fa-edit fa-lg"></i> 
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+
+    
+    <ngb-pagination size="sm" [collectionSize]="totalData" 
+        [(page)]="curPage" 
+        [maxSize]="totalRecord" 
+        (pageChange)="loadPage()"
+        [boundaryLinks]="true"></ngb-pagination>
+
+  </div>
+</div>

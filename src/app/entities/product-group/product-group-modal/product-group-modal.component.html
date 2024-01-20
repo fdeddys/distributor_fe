@@ -1,0 +1,52 @@
+<style>
+    input {
+        width: 100%;
+    }
+</style>
+<div class="modal-header" *ngIf="statusRec!=='View'">
+    <h4 class="modal-title">
+        <span class="badge badge-light" style="color:cornflowerblue">Product Group</span>
+    </h4>
+</div>
+<div class="modal-body">
+    <table class="table table-sm table-striped">
+        <tr>
+            <th colspan="2">
+                <button type="button" class="btn btn-outline-primary" style="color:green">
+                    Status <span class="badge badge-light" style="color:red"> {{statusRec}} </span>
+                    <span class="badge badge-light" style="color:purple"> {{viewMsg}}</span>
+                    <span class="sr-only">unread messages</span>
+                </button>
+            </th>
+        </tr>
+        <tr>
+            <td>Code</td>
+            <td><input type="text" disabled size="50%" [(ngModel)]=productGroup.code></td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td><input type="text" maxlength="250" size="50%" [(ngModel)]=productGroup.name></td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>
+                <!-- <input type="text" size="50%" [(ngModel)]=productGroup.status> -->
+                <select [(ngModel)]="statusSelected" class="form-control" [ngModelOptions]="{standalone: true}">
+                    <option *ngFor="let status of statuses" [value]="status">
+                        {{status}}
+                    </option>
+                </select>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="modal-footer">
+    <div *ngIf="statusRec!=='View' ">
+        <button type="button" class="btn btn-outline-danger" (click)="save()">Save
+            <i class="fa fa-save fa-lg"></i>
+        </button>
+        <button type="button" class="btn btn-outline-dark" (click)="closeForm()">Close
+            <i class="fa fa-times fa-lg"></i>
+        </button>
+    </div>
+</div>

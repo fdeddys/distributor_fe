@@ -1,0 +1,194 @@
+<div class="card border-primary">
+    <div class="card-body">
+        <h5 class="card-title" style="color: tomato;">Payment Supplier</h5>
+
+        <div class="btn-group" role="group" *ngIf="paymentSupplier">
+            <button type="button" class="btn btn-outline-info btn-sm" (click)="addNew()">Add New
+                <i class="fa fa-plus-circle fa-lg"></i>
+            </button>
+            <button type="button" *ngIf="paymentSupplier.status === 0 || paymentSupplier.status === 10" class="btn btn-outline-success btn-sm" (click)="saveHdr('addnew', null)">Save
+                <i class="fa fa-save fa-lg"></i>
+            </button>
+            <button type="button"  *ngIf="paymentSupplier.status === 10" class="btn btn-outline-primary btn-sm" (click)="approve()">Submit
+                <i class="fa fa-thumbs-o-up fa-lg"></i>
+            </button>
+            <!-- <button type="button" *ngIf="paymentSupplier.status === 10  "  class="btn btn-outline-danger btn-sm" (click)="reject()">Cancel
+                <i class="fa fa-times fa-lg"></i>
+            </button> -->
+            <!-- <button type="button" *ngIf="paymentSupplier.status === 20 " class="btn btn-outline-warning btn-sm" (click)="preview()">Preview
+                <i class="fa fa-print fa-lg"></i>
+            </button> -->
+            <button type="button" class="btn btn-outline-info btn-sm" (click)="backToLIst()">Back
+                <i class="fa fa-list fa-lg"></i>
+            </button>
+        </div>
+        <br>
+        <br>
+        <div *ngIf="paymentSupplier">
+            <table class="table table-sm table-striped">
+                <tbody style="color: cornflowerblue;">
+                    <tr>
+                        <td>payment No</td>
+                        <td><input type="text" disabled readonly  [(ngModel)]="paymentSupplier.paymentNo">
+                            [{{paymentSupplier.id}}]
+                        </td>
+                        <!-- < -->
+                        <td>Total</td>
+                        <td>
+                            <span style="color: blue;">
+                                    {{ total | number:'0.0-0'}}
+                            </span>                           
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Date</td>
+                        <td>
+                            <input type="text" ngbDatepicker #d="ngbDatepicker" readonly [(ngModel)]="selectedDate" style="margin-right: 5px;" />
+                            <button (click)="d.toggle()" class="btn btn-outline-success btn-sm">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </td>
+                        <td>Status</td>
+                        <td>
+                            {{getStatus(paymentSupplier.status)}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Supplier</td>
+                        <td *ngIf="suppliers">
+                            <select [(ngModel)]="supplierSelected" 
+                                style="width: 40%;"  
+                                #supp
+                                class="form-control" 
+                                [ngModelOptions]="{standalone: true}"
+                                (change)="onChangeSupp($event, supp.value)"
+                                [disabled]="!(paymentSupplier.status === 0 || paymentSupplier.status === 10)"
+                                >
+                                <option *ngFor="let supplier of suppliers" [value]="supplier.id">
+                                    {{supplier.name}}
+                                </option>
+                            </select>
+                            <!-- <input id="typeahead-basic" type="text"
+                                size="50%" 
+                                [(ngModel)]="supplierSelected"
+                                [ngbTypeahead]="searchSupplier" 
+                                [resultFormatter]="formatter"
+                                [inputFormatter]="formatter" 
+                                (selectItem)="selectedItem($event)"
+                                [disabled]="!(paymentSupplier.status === 0 || paymentSupplier.status === 10)"
+                                /> -->
+                                <!-- [ {{supplierSelected | json}} ]  -->
+                                <!-- {{paymentSupplier.poNo}} -->
+                        </td>
+                        <td>Note</td>
+                        <td rowspan="2"><textarea rows="3" size="100%" style="min-width: 90%" [(ngModel)]="paymentSupplier.note" ></textarea>
+                    </tr>
+                    <tr>
+                        <td>
+                            Supplier Info
+                        </td>
+                        <td >
+                            <div *ngIf="supplierOnSelect" >
+                                {{supplierOnSelect.bank.name }} - {{supplierOnSelect.bankAccountName }} - {{supplierOnSelect.bankAccountNo }} 
+
+                            </div>
+                            <!-- {{getBankInfo(supplierSelected)}} -->
+                            <!-- <div *ngIf="supplierSelected" >
+                                <div *ngIf="supplierSelected.bank.id !== 0" >
+                                    {{supplierSelected.bank.name | json }} |
+                                </div>
+                                {{supplierSelected.bankAccountNo }} | {{supplierSelected.bankAccountName }}
+                            </div> -->
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Payment No Reff.
+                        </td>
+                        <td>
+                            <input type="text" size="50%" [(ngModel)]="paymentSupplier.paymentReff" />
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <!-- <tr>
+                        <td>
+                            Payment No Reff.
+                        </td>
+                        <td>
+                            <input type="text" size="50%" [(ngModel)]="paymentSupplier.paymentReff" />
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr> -->
+
+                    <tr>
+                        <td>
+                            Add Receive Data
+                        </td>
+                        <td>
+                            <button (click)="loadReceive()"  class="btn btn-outline-warning btn-sm" style="margin-right: 5px;">
+                                Search  <i class="fa fa-search fa-lg"></i>
+                            </button>
+                            <br>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                 
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        
+        <div *ngIf="paymentSupplier">
+            <!-- height:370px; -->
+            <div style=" padding: 5px 15px 5px 15px; ">
+                <table class="table table-sm table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th *ngIf ="paymentSupplier"></th>
+                            <th scope="col">Receive</th>
+                            <th scope="col">Receive Date</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let paymentSupplierDetail of paymentSupplierDetails">
+                            <td *ngIf ="paymentSupplier">
+                                <button type="button" *ngIf="paymentSupplier.status === 10"  (click)="confirmDelItem(paymentSupplierDetail)" class="btn btn-outline-danger btn-sm">
+                                    <i class="fa fa-trash fa-lg"></i>
+                                </button>
+                                <button type="button"  (click)="previewReceive(paymentSupplierDetail)" class="btn btn-outline-primary btn-sm">
+                                    <i class="fa fa-print fa-lg"></i>
+                                </button>
+                            </td>
+                            <td>{{paymentSupplierDetail.receive.receiveNo}}</td>
+                            <td>{{paymentSupplierDetail.receive.receiveDate | date:'dd-MMM-yyyy'}}</td>
+                            <td>{{paymentSupplierDetail.total   | number:'0.0-0'  }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <table style="width: 100%; padding: 5px 15px 5px 15px; ">
+                    <tr>
+                        <td style="width: 50%;">
+                            <ngb-pagination size="sm" [collectionSize]="totalRecord" [(page)]="curPage" [maxSize]="10"  [maxSize]="5"
+                                (pageChange)="loadPage()" [boundaryLinks]="true">
+                            </ngb-pagination>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <!-- totalrec:{{totalRecord}} curpage:{{curPage}} -->
+        </div>   
+    </div>
+
+</div>

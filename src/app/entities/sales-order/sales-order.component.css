@@ -1,0 +1,9 @@
+.centerText {
+    text-align: center; 
+    vertical-align: middle;
+}
+
+.rightText {
+    text-align: right; 
+    vertical-align: middle;
+}

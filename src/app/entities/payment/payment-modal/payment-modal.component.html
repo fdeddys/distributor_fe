@@ -1,0 +1,273 @@
+<div class="card border-primary">
+    <div class="card-body">
+        <h5 class="card-title" style="color: tomato;">Payment</h5>
+
+        <div class="btn-group" role="group" *ngIf="payment">
+            <button type="button" class="btn btn-outline-info btn-sm" (click)="addNew()">Add New
+                <i class="fa fa-plus-circle fa-lg"></i>
+            </button>
+            <button type="button" *ngIf="payment.status === 0 || payment.status === 10" class="btn btn-outline-success btn-sm" (click)="saveHdr()">Save
+                <i class="fa fa-save fa-lg"></i>
+            </button>
+            <button type="button"  *ngIf="payment.status === 10" class="btn btn-outline-primary btn-sm" (click)="approve()">Submit
+                <i class="fa fa-thumbs-o-up fa-lg"></i>
+            </button>
+            <button type="button" *ngIf="payment.status === 20"  class="btn btn-outline-danger btn-sm" (click)="reject()">Reject
+                <i class="fa fa-times fa-lg"></i>
+            </button>
+            <button type="button" *ngIf="payment.status === 20 " class="btn btn-outline-warning btn-sm" (click)="preview('invoice')">Print 
+                <i class="fa fa-print fa-lg"></i>
+            </button>
+            <button type="button" class="btn btn-outline-info btn-sm" (click)="backToLIst()">Back
+                <i class="fa fa-list fa-lg"></i>
+            </button>
+        </div>
+        <br>
+        <br>
+        <div *ngIf="payment">
+            <table class="table table-sm table-striped">
+                <thead>
+                    <td style="width: 15%;"> </td>
+                    <td style="width: 35%;"> </td>
+                    <td style="width: 15%;"> </td>
+                    <td style="width: 35%;"> </td>
+                </thead>
+                <tbody style="color: cornflowerblue;">
+                    <tr>
+                        <td>Payment No</td>
+                        <td><input type="text" readonly size="50%" [(ngModel)]="payment.paymentNo">
+                        </td>
+                        <!-- < -->
+                        <td>Total Order</td>
+                        <td>
+                            <span style="color: blue;">
+                                    {{ totalOrder | number:'0.0-0'}}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Date</td>
+                        <td>
+                            <input type="text" ngbDatepicker #d="ngbDatepicker" readonly [(ngModel)]="selectedDate" />
+                            <button (click)="d.toggle()">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </td>
+                        <td>Total Return </td>
+                        <td>
+                            <span style="color: blue;">
+                                {{ totalReturn | number:'0.0-0'}}
+                        </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Customer</td>
+                        <td *ngIf="customers">
+                            <input id="typeahead-basic" type="text" [(ngModel)]="customerSelected"
+                                [ngbTypeahead]="searchCustomer" [resultFormatter]="formatter"
+                                [inputFormatter]="formatter" />
+                                [ {{customerSelected.id}} ] 
+                        </td>
+                        <td>Total yg di bayar</td>
+                        <td>
+                            <span style="color: blue;">
+                                {{ totalOrder - totalReturn | number:'0.0-0'}}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Status</td>
+                        <td><input type="text" readonly size="50%" [(ngModel)]="payment.status"> </td>
+                        <td>Total Payment</td>
+                        <td>
+                            <span style="color: blue;">
+                                {{ totalPayment | number:'0.0-0'}}
+                            </span>
+                        </td>
+                        <!-- <td>Note</td>
+                        <td rowspan="2"><textarea rows="3" size="100%" style="min-width: 90%"></textarea> -->
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>Selisih</td>
+                        <td>
+                            <span style="color: blue;">
+                                {{ totalPayment  - (totalOrder - totalReturn ) | number:'0.0-0'}}
+                            </span>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- <div *ngIf="paymentOrders"> -->
+
+            <ngb-tabset [destroyOnHide]="false">
+                <ngb-tab title="Order">
+                    <ng-template ngbTabContent>
+                      
+                        <div style="height:360px; padding: 5px 15px 5px 15px; ">
+                            <table class="table table-sm table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th *ngIf ="paymentOrders" style="width: 5%;"></th>
+                                        <th scope="col" style="width: 20%;">Sales Order No</th>
+                                        <th scope="col" style="width: 10%;">SO Date</th>
+                                        <th scope="col" style="width: 10%;">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let paymentOrder of paymentOrders">
+                                        <td *ngIf ="payment">
+                                            <button type="button" *ngIf="payment.status === 10"  (click)="confirmDelPaymentOrder(paymentOrder)" class="btn btn-outline-danger btn-sm">
+                                                <i class="fa fa-trash fa-lg"></i>
+                                            </button>
+                                        </td>
+                                        <td>{{paymentOrder.salesOrder.salesOrderNo}}</td>
+                                        <td>{{paymentOrder.salesOrder.orderDate | date:'dd-MMM-yyyy' }}</td>
+                                        <td>{{paymentOrder.total | number:'0.0-0' }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                        </div>
+                        <ngb-pagination size="sm" [collectionSize]="totalData" [(page)]="curPage" [maxSize]="totalRecord"
+                            (pageChange)="loadPage()" [boundaryLinks]="true">
+                        </ngb-pagination>
+                        
+                        <div *ngIf="payment">
+                            <button type="button"  *ngIf="payment.status === 10"  class="btn btn-outline-danger btn-sm" (click)="addNewSalesOrder()">
+                                Add Sales Order
+                            </button>
+                            <button type="button"  *ngIf="payment.status === 10"  class="btn btn-outline-primary btn-sm" (click)="refreshSalesOrder()">
+                                Refresh
+                            </button>
+                        </div>
+                    </ng-template>
+                </ngb-tab>
+
+                <ngb-tab title="Return">
+                    <ng-template ngbTabContent>
+                        <div style="height:360px; padding: 5px 15px 5px 15px; ">
+                            <table class="table table-sm table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th *ngIf ="paymentReturns" style="width: 5%;"></th>
+                                        <th scope="col" style="width: 20%;">Return No</th>
+                                        <th scope="col" style="width: 10%;">Return Date</th>
+                                        <th scope="col" style="width: 10%;">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let paymentReturn of paymentReturns">
+                                        <td *ngIf ="payment">
+                                            <button type="button" *ngIf="payment.status === 10"  
+                                                (click)="confirmDelPaymentReturn(paymentReturn)" class="btn btn-outline-danger btn-sm">
+                                                <i class="fa fa-trash fa-lg"></i>
+                                            </button>
+                                        </td>
+                                        <td>{{paymentReturn.salesOrderReturn.returnNo}}</td>
+                                        <td>{{paymentReturn.salesOrderReturn.returnDate | date:'dd-MMM-yyyy' }}</td>
+                                        <td>{{paymentReturn.total | number:'0.0-0' }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                        </div>
+                        <ngb-pagination size="sm" [collectionSize]="totalData" [(page)]="curPage" [maxSize]="totalRecord"
+                            (pageChange)="loadPage()" [boundaryLinks]="true">
+                        </ngb-pagination>
+                        
+                        <div *ngIf="payment">
+                            <button type="button"  *ngIf="payment.status === 10"  class="btn btn-outline-danger btn-sm" (click)="addNewReturn()">
+                                Add Return
+                            </button>
+                            <button type="button"  *ngIf="payment.status === 10"  class="btn btn-outline-primary btn-sm" (click)="refreshReturn()">
+                                Refresh
+                            </button>
+                        </div>
+                    </ng-template>
+                </ngb-tab>
+                
+                <ngb-tab title="Payment">
+                    <ng-template ngbTabContent>
+                        <div style="padding: 5px;  background-color: lightblue;">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <td style="width: 30%;color: white;">Payment Type</td>
+                                        <td style="width: 30%;color: white;">Reff</td>
+                                        <td style="width: 20%;color: white;">Total</td>
+                                        <td style="width: 10%;color: white;">#</td>
+                                    </tr>
+                
+                                </thead>
+                                <tbody style="color: hotpink;;">
+                                    <tr>
+                                        <td>
+                                            <span *ngIf="paymentTypes" >
+                                                <select id="select-type-basic" [(ngModel)]="paymentTypeSelected" style="width: 90%;"  >
+                                                    <option *ngFor="let paymentType of paymentTypes" [value]="paymentType.id" >
+                                                    {{paymentType.name}}
+                                                    </option>
+                                                </select>
+                                            </span>
+                                        </td>
+                                        <td><input type="text" [(ngModel)]="paymentReff" style="width: 90%;" ></td>
+                                        <td><input type="number" [(ngModel)]="paymentTotal" ></td>
+                                        <td *ngIf ="payment">
+                                            <button type="button"  *ngIf="payment.status === 10"  class="btn btn-outline-danger btn-sm" (click)="addNewItem()">
+                                                <i class="fa fa-check fa-lg"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <br>
+
+                        <div style="height:360px; padding: 5px 15px 5px 15px; ">
+                            <table class="table table-sm table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th *ngIf ="paymentDetails" style="width: 5%;"></th>
+                                        <th scope="col" style="width: 20%;">Payment Type</th>
+                                        <th scope="col" style="width: 10%;">Reff</th>
+                                        <th scope="col" style="width: 10%;">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let paymentDetail of paymentDetails">
+                                        <td *ngIf ="payment">
+                                            <button type="button" *ngIf="payment.status === 10"  (click)="confirmDelPaymentDetail(paymentDetail)" class="btn btn-outline-danger btn-sm">
+                                                <i class="fa fa-trash fa-lg"></i>
+                                            </button>
+                                        </td>
+                                        <td>{{paymentDetail.paymentType.name}}</td>
+                                        <td>{{paymentDetail.paymentReff}}</td>
+                                        <td>{{paymentDetail.total | number:'0.0-0' }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <ngb-pagination size="sm" [collectionSize]="totalData" [(page)]="curPage" [maxSize]="totalRecord"
+                                (pageChange)="loadPage()" [boundaryLinks]="true">
+                            </ngb-pagination>
+
+                            <div *ngIf="payment">
+                                <button type="button"  *ngIf="payment.status === 10"  class="btn btn-outline-primary btn-sm" (click)="refreshPaymentDetail()">
+                                    Refresh
+                                </button>
+                            </div>
+
+                        </div>
+                        
+                    </ng-template>
+                </ngb-tab>
+            </ngb-tabset>
+            
+        <!-- </div> -->
+    </div>
+
+</div>

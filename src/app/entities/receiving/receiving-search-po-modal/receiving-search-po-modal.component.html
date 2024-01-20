@@ -1,0 +1,87 @@
+<style>
+    input {
+        width: 100%;
+    }
+</style>
+<div class="modal-header" >
+    <h4 class="modal-title">
+        <span class="badge badge-light" style="color:cornflowerblue">Search PO</span>
+    </h4>
+</div>
+<div class="modal-body">
+    <table class="table table-sm table-striped">
+        <thead>
+            <tr>
+                <th style="width: 20%;" ></th>
+                <th style="width: 50%;" ></th>
+                <th style="width: 30%;" ></th>
+            </tr>
+        </thead>
+        <tbody style="color: cornflowerblue;">
+            <tr>
+                <td>Receive No</td>
+                <td>
+                    <input type="text" readonly  [(ngModel)]="receive.receiveNo">
+                </td>
+                <td>
+                    [{{receive.id}}]
+                </td>
+            </tr>
+            <tr>
+                <td>Supplier</td>
+                <td >
+                    <input type="text" readonly  [(ngModel)]="supplier">
+                </td>
+                <td>
+                    [{{supplier}}]
+                </td>
+            </tr>
+            <tr>
+                <td>PO Number</td>
+                <td >
+                    <input type="text"   [(ngModel)]="searchTerm.purchaseOrderNo">
+                </td>
+                <td>
+                    {{receiveDate}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="height:400px; padding: 15px 15px 15px 15px; ">
+        <table class="table table-sm table-hover table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th scope="col">PO No</th>
+                    <th scope="col" class='centerText' >Date</th>
+                    <th scope="col">Supplier</th>
+                    <th scope="col" class='rightText' >Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let purchaseOrder of purchaseOrders">
+                    <td>
+                        <button type="button" class="btn btn-outline-warning" (click)="save(purchaseOrder)">get data
+                            <i class="fa fa-check fa-lg"></i>
+                        </button>
+                    </td>
+                    <td>{{purchaseOrder.purchaseOrderNo}}</td>
+                    <td class='centerText' >{{purchaseOrder.purchaseOrderDate | date:'dd-MMM-yyyy'}}</td>
+                    <td>{{purchaseOrder.supplier.name }}</td>
+                    <td class='rightText'>{{purchaseOrder.grandTotal | number:'0.0-0' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <ngb-pagination size="sm" [collectionSize]="totalData" [(page)]="curPage" [maxSize]="totalRecord"
+        (pageChange)="loadPage()" [boundaryLinks]="true">
+    </ngb-pagination>
+
+</div>
+<div class="modal-footer">       
+    <button type="button" class="btn btn-outline-dark" (click)="closeForm()">Close
+        <i class="fa fa-times fa-lg"></i>
+    </button>
+
+</div>

@@ -1,0 +1,122 @@
+<div class="card border-primary">
+    <div class="card-body">
+        <h5 class="card-title" style="color: tomato;">History</h5>
+
+        <div >
+            <table class="table table-sm table-striped">
+                <thead>
+                    <td style="width: 15%;"> </td>
+                    <td style="width: 50%;"> </td>
+                    <td style="width: 15%;"> </td>
+                    <td style="width: 20%;"> </td>
+                </thead>
+                <tbody style="color: cornflowerblue;">
+                    <tr>
+                        <td>Search Product Name</td>
+                        <td>
+                            <input id="typeahead-http" type="text" 
+                                [(ngModel)]="modelProduct" 
+                                [ngbTypeahead]="searchProduct"
+                                [resultFormatter]="formatterProdList" 
+                                [inputFormatter]="formatterProdInput" 
+                                size="50%"
+                                placeholder="search product name" 
+                                (selectItem)="getItem($event)"
+                            /> 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Product Selected
+                        </td>
+                        <td *ngIf="productSelected">
+                            {{ productSelected.name }} [ {{ productSelected.ProductGroup.name }} ][ {{ productSelected.code }} ]
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Date</td>
+                        <td>
+                            <input type="text" ngbDatepicker #d1="ngbDatepicker" readonly [(ngModel)]="selectedDateStart" />
+                            <button (click)="d1.toggle()">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                            s / d
+                            <input type="text" ngbDatepicker #d2="ngbDatepicker" readonly [(ngModel)]="selectedDateEnd" />
+                            <button (click)="d2.toggle()">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Gudang [ {{warehouseSelected}} ]</td>
+                        <td >
+                            <span  >
+                                <select id="select-type-basic" [(ngModel)]="warehouseSelected" style="width: 80%;"  class="form-control" >
+                                    <option *ngFor="let warehouse of warehouses" [value]="warehouse.id" >
+                                    {{warehouse.name}}
+                                    </option>
+                                </select>
+                            </span>
+                            
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="button"  class="btn btn-outline-primary btn-sm" (click)="preview()">Preview
+                                <i class="fa fa-print fa-lg"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        
+        <div >
+            <!-- {{receiveDetails | json}} -->
+            <div style="height:350px; padding: 5px 15px 5px 15px; ">
+                <table class="table table-sm table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Trans Date</th>
+                            <th scope="col">Code</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">UOM</th>
+                            <th scope="col">Masuk</th>
+                            <th scope="col">Keluar</th>
+                            <th scope="col">Saldo </th>
+                            <th scope="col">HPP</th>
+                            <th scope="col">Reff No</th>
+                            <th scope="col">User</th>
+                            <th scope="col">Desc</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let historyStock of historyStocks">
+                            <td>{{historyStock.transDate  | date:'dd-MMM-yyyy'  }}</td>
+                            <td>{{historyStock.code}}</td>
+                            <td>{{historyStock.name }}</td>
+                            <td>{{historyStock.satuan }}</td>
+                            <td>{{historyStock.debet  }}</td>
+                            <td>{{historyStock.kredit}}</td>
+                            <td>{{historyStock.saldo  }}</td>
+                            <td>{{historyStock.hpp | number:'0.0-0'}}</td>
+                            <td>{{historyStock.reffNo}}</td>
+                            <td>{{historyStock.lastUpdateBy  }}</td>
+                            <td>{{historyStock.description  }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <ngb-pagination size="sm" [collectionSize]="totalData" [(page)]="curPage" [maxSize]="totalRecord"
+                (pageChange)="loadPage(curPage)" [boundaryLinks]="true">
+            </ngb-pagination>
+
+        </div>
+
+
+    </div>
+
+</div>

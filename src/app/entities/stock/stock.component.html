@@ -1,0 +1,107 @@
+<div class="card border-primary">
+    <div class="card-body">
+        <h5 class="card-title">Stock In Warehouse</h5>
+        <div>
+            <form>
+                <div class="row">
+                    <div class="col-md-6 mb-6">
+                        <div class="form-group">
+                            <label for="productCodeInput">Nama</label>
+                            <input 
+                                type="text" class="form-control" 
+                                id="productCodeInput" aria-describedby="productCodeInput" 
+                                [(ngModel)]='searchTerm.name'
+                                name="searchTerm"
+                                placeholder="Product Name">
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-6">
+                        <div class="form-group">
+                            <label for="productComposition">Composition</label>
+                            <input 
+                                type="text" class="form-control" 
+                                id="productCompositionInput" aria-describedby="productCompositionInput" 
+                                [(ngModel)]='searchTerm.composition'
+                                name="searchTerm"
+                                placeholder="Product Composition">
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" (click)="onFilter()" class="btn mr-2 btn-outline-success btn-sm">Search <i
+                        class="fa fa-search fa-lg"></i>
+                    </button>    
+                </div>
+            </form>
+        </div>
+        <br>
+        
+        <div style="height:400px; padding: 15px 15px 15px 15px; " *ngIf ="products">
+            <table class="table table-sm table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th scope="col">Code</th>
+                        <!-- <th scope="col">Group</th> -->
+                        <!-- <th scope="col">Brand</th> -->
+                        <th scope="col">Name</th>
+                        <th scope="col">Composition</th>
+                        <!-- <th scope="col">UOM</th>
+                        <th scope="col">SellPrice</th> -->
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let product of products ">
+                        <td>
+                            <button type="button" (click)="openStock(product)" class="btn btn-outline-warning btn-sm">
+                               View <i class="fa fa-list fa-lg"></i>
+                            </button>
+                        </td>
+                        <td>{{product.code}}</td>
+                        <!-- <td>{{product.ProductGroup.name}}</td> -->
+                        <!-- <td>{{product.Brand.name}}</td> -->
+                        <td>{{product.name}}</td>
+                        <td>{{product.composition}}</td>
+                        <!-- <td>{{product.smallUom.name}}</td> -->
+                        <!-- <td>{{getSellPrice(product) |  number:'0.0-0'}}</td> -->
+                        <td>{{ (product.status==1 ?'Active' : 'Inactive') | uppercase }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <ngb-pagination size="sm" [collectionSize]="totalData" [(page)]="curPage" [maxSize]="totalRecord"
+            (pageChange)="loadPage()" [boundaryLinks]="true">
+        </ngb-pagination>
+        <hr>
+        <h3>Stock</h3>
+        <div style="height:200px; padding: 15px 15px 15px 15px; " *ngIf ="products">
+            <table class="table table-sm table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Code</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Qty</th>
+                        <th scope="col">UOM</th>
+                        <th scope="col">Sell Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let stock of stocks ">
+                        <td>{{stock.warehouse.code}}</td>
+                        <td>{{stock.warehouse.name}}</td>
+                        <td>{{stock.qty}}</td>
+                        <td>{{uomSelected}}</td>
+                        <td>{{sellPriceSelected |  number:'0.0-0'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <ngb-pagination size="sm" [collectionSize]="totalDataStocks" [(page)]="curPageWh" [maxSize]="totalRecord"
+            (pageChange)="loadPage()" [boundaryLinks]="true">
+        </ngb-pagination>
+    </div>
+
+</div>

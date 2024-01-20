@@ -1,0 +1,253 @@
+<div class="card border-primary">
+    <div class="card-body">
+        <h5 class="card-title" style="color: tomato;">Sales Order</h5>
+
+        <div class="btn-group" role="group" *ngIf="salesOrder">
+            <button type="button" class="btn btn-outline-info btn-sm" (click)="addNew()">Add New
+                <i class="fa fa-plus-circle fa-lg"></i>
+            </button>
+            <button type="button" *ngIf="salesOrder.status === 0 || salesOrder.status === 10" class="btn btn-outline-success btn-sm" (click)="saveHdr('addnew', null)">Save
+                <i class="fa fa-save fa-lg"></i>
+            </button>
+            <button type="button"  *ngIf="salesOrder.status === 10" class="btn btn-outline-primary btn-sm" (click)="approve()">Submit
+                <i class="fa fa-thumbs-o-up fa-lg"></i>
+            </button>
+            <button type="button" *ngIf="salesOrder.status === 10"  class="btn btn-outline-danger btn-sm" (click)="reject()">Cancel
+                <i class="fa fa-times fa-lg"></i>
+            </button>
+            <button type="button" *ngIf="salesOrder.status === 20 && isCash === false " class="btn btn-outline-warning btn-sm" (click)="preview('so')">Preview SO
+                <i class="fa fa-print fa-lg"></i>
+            </button>
+            <button type="button" *ngIf="salesOrder.status === 20 && isCash === false " class="btn btn-outline-danger btn-sm" (click)="createInvoice()">Create Invoice
+                <i class="fa fa-thumbs-o-up fa-lg"></i>
+            </button>
+            <button type="button" *ngIf="salesOrder.status === 40 && isCash === false " class="btn btn-outline-warning btn-sm" (click)="preview('invoice')">Print Invoice
+                <i class="fa fa-print fa-lg"></i>
+            </button>
+            <button type="button" class="btn btn-outline-info btn-sm" (click)="backToLIst()">Back
+                <i class="fa fa-list fa-lg"></i>
+            </button>
+        </div>
+        <br>
+        <br>
+        <div *ngIf="salesOrder">
+            <table class="table table-sm table-striped">
+                <thead>
+                    <td style="width: 15%;"> </td>
+                    <td style="width: 35%;"> </td>
+                    <td style="width: 15%;"> </td>
+                    <td style="width: 35%;"> </td>
+                </thead>
+                <tbody style="color: cornflowerblue;">
+                    <tr>
+                        <td>Sales Order No [{{salesOrder.id}}]</td>
+                        <td>
+                            <!-- <input type="text" readonly size="50%" [(ngModel)]="salesOrder.salesOrderNo"> -->
+                            <span style="color: blue;">
+                                {{salesOrder.salesOrderNo  }}
+                            </span>
+                            
+                        </td>
+                        <!-- < -->
+                        <td>Total</td>
+                        <td>
+                            <span style="color: blue;">
+                                    {{ total | number:'0.0-0'}}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Date</td>
+                        <td>
+                            <input type="text" ngbDatepicker #d="ngbDatepicker" readonly [(ngModel)]="selectedDate" />
+                            <button (click)="d.toggle()">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </td>
+                        <td>Tax <input type="checkbox"  [(ngModel)]="isTax" (ngModelChange)="checkTax()"></td>
+                        <td>
+                            <!-- <input type="text" readonly size="50%" [(ngModel)]="taxAmount"> -->
+                            <span style="color: blue;">
+                                    {{ taxAmount | number:'0.0-0'}}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Customer</td>
+
+                        <td *ngIf="!isCash">
+                            <input *ngIf="customers" 
+                                id="typeahead-basic" type="text" [(ngModel)]="customerSelected"
+                                [ngbTypeahead]="searchCustomer" [resultFormatter]="formatter"
+                                [inputFormatter]="formatter" />
+                                <!-- [ {{customerSelected.id}} ]  -->
+                        </td>
+                        <td *ngIf ="isCash">
+                            CASH
+                        </td>
+                        <td>Grand total</td>
+                        <td class='rightText'>
+                            <!-- <input type="text" readonly size="50%" [(ngModel)]="grandTotal"> -->
+                            <span style="color: blue;">
+                                    {{ grandTotal | number:'0.0-0'}}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Status</td>
+                        <td>
+                            {{getStatus(salesOrder.status)}}
+                            <!-- <input type="text" readonly size="50%" [(ngModel)]="salesOrder.status">  -->
+                        </td>
+                        <td>Note</td>
+                        <td rowspan="2"><textarea rows="3" size="100%" style="min-width: 90%" [(ngModel)]="salesOrder.note" ></textarea>
+                    </tr>
+                   
+                    <tr>
+                        <td>Warehouse  </td>
+                        <td >
+                            <span *ngIf="warehouses" >
+                                <select id="select-type-basic"  class="form-control"  [(ngModel)]="warehouseSelected" style="width: 80%;"  >
+                                    <option *ngFor="let warehouse of warehouses" [value]="warehouse.id" >
+                                    {{warehouse.name}}
+                                    </option>
+                                </select>
+                            </span>
+                            <!-- [ {{warehouseSelected}} ] -->
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Salesman</td>
+                        <td>
+                            <span *ngIf="salesmans">
+                                <select id="select-type-basic"  class="form-control"   [(ngModel)]="salesmanSelected" style="width: 80%;">
+                                    <option *ngFor="let salesman of salesmans" [value]="salesman.id">
+                                    {{salesman.name}}
+                                    </option>
+                                </select>
+                                <!-- [ {{salesmanSelected}} ]  -->
+                            </span>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        <div>
+            <table class="table table-sm table-striped">
+                <thead>
+                    <!-- <tr> -->
+                        <td scope="col" style="width: 20%;">Product</td>
+                        <td scope="col" style="width: 15%;">Price</td>
+                        <td scope="col" style="width:  5%;">Qty</td>
+                        <td scope="col" style="width:  5%;">Unit</td>
+                        <td scope="col" style="width: 15%;">Disc  [%]</td>
+                        <!-- <td scope="col" style="width: 15%;">Disc 2 [%]</td> -->
+                        <td scope="col" style="width: 20%;">Total</td>
+                        <td scope="col" style="width: 10%;">#</td>
+                    <!-- </tr> -->
+
+                </thead>
+                <tbody style="color: hotpink; background-color: ghostwhite;">
+                    <tr>
+                        <td>
+                            <input id="typeahead-http" type="text" [(ngModel)]="model" 
+                                [ngbTypeahead]="search"
+                                [resultFormatter]="formatterProdList" 
+                                [inputFormatter]="formatterProdInput" 
+                                placeholder="search product name" 
+                                (selectItem)="getItem($event)"
+                                size="50%"
+                                /> 
+                        </td>
+                        <td>
+                            <input type="number" [(ngModel)]="priceAdded" [readonly]="true"  >
+                            <!-- {{priceAdded}} -->
+                        </td>
+                       
+                        <td>
+                            <input type="number" [(ngModel)]="qtyAdded" placeholder="input qty" >
+                        </td>
+                        <td>
+                            {{uomAddedName}}
+                        </td>
+                        <td>
+                            <input type="number" [(ngModel)]="discAdded " placeholder="input " >
+                        </td>
+                        <!-- <td>
+                            <input type="number" [(ngModel)]="disc2Added " placeholder="input " >
+                        </td> -->
+                        <td>
+                            <!-- <input type="number" readonly> -->
+                            {{  ( (priceAdded*qtyAdded) - (priceAdded*qtyAdded*discAdded/100)  ) | number:'0.0-0' }}
+                        </td>
+                        <td *ngIf ="salesOrder">
+                            <button type="button"  *ngIf="salesOrder.status === 10"  class="btn btn-outline-info btn-sm" (click)="addNewItem()">
+                                <i class="fa fa-check fa-lg"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="salesOrder">
+            <!-- {{salesOrderDetails | json}} -->
+            <div style="height:360px; padding: 5px 15px 5px 15px; ">
+                <table class="table table-sm table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th *ngIf ="salesOrder" style="width: 5%;"></th>
+                            <th scope="col" style="width: 25%;">Product</th>
+                            <th scope="col" style="width: 10%;" style="text-align: end;">Price</th>
+                            <th scope="col" style="width: 10%;" style="text-align: center;">Qty</th>
+                            <!-- <th  *ngIf="salesOrder.status === 20" scope="col" style="width: 10%;">Qty Recv</th> -->
+                            <th scope="col" style="width: 10%;" style="text-align: center;">Unit</th>
+                            <th scope="col" style="width: 10%;" style="text-align: end;">Disc [%]</th>
+                            <!-- <th scope="col" style="width: 10%;" style="text-align: end;">Disc 2[%]</th> -->
+                            <th scope="col" style="width: 20%;" style="text-align: end;">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let salesOrderDetail of salesOrderDetails">
+                            <td *ngIf ="salesOrder">
+                                <button type="button" *ngIf="salesOrder.status === 10"  (click)="confirmDelItem(salesOrderDetail)" class="btn btn-outline-danger btn-sm">
+                                    <i class="fa fa-trash fa-lg"></i>
+                                </button>
+                                <button type="button" *ngIf="salesOrder.status === 10"  (click)="openEdit(salesOrderDetail)" class="btn btn-outline-primary btn-sm">
+                                    <i class="fa fa-pencil fa-lg"></i>
+                                </button>
+                                <!-- <button type="button" *ngIf="salesOrder.status === 20"  (click)="confirmUpdateItem(salesOrderDetail)" class="btn btn-outline-danger btn-sm">
+                                    <i class="fa fa-check fa-lg"></i>
+                                </button> -->
+                            </td>
+                            <td style="white-space: nowrap;" >{{salesOrderDetail.product.name}}</td>
+                            <td style="text-align: end;" >{{salesOrderDetail.price | number:'0.0-0' }}</td>
+                            <td style="text-align: center;">{{salesOrderDetail.qtyOrder | number:'0.0-0' }}</td>
+                            <!-- <td *ngIf="salesOrder.status === 20" >
+                                <input type="number" [(ngModel)]="salesOrderDetail.qtyReceive " placeholder="input disc" >
+                            </td> -->
+                            <td style="text-align: center;">{{salesOrderDetail.uom.name}}</td>
+                            <td style="text-align: end;">{{salesOrderDetail.disc1  }}</td>
+                            <!-- <td style="text-align: end;">{{salesOrderDetail.disc2  }}</td> -->
+                            <td style="text-align: end;">{{ getTotal(salesOrderDetail) | number:'0.0-0' }}  </td>
+                            <!-- <td>{{ (salesOrderDetail.price * salesOrderDetail.qtyOrder ) - salesOrderDetail.disc1 | number:'0.0-0'  }}</td> -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <ngb-pagination size="sm" [collectionSize]="totalData" [(page)]="curPage" [maxSize]="10"
+                (pageChange)="loadPage()" [boundaryLinks]="true">
+            </ngb-pagination>
+
+        </div>
+
+
+    </div>
+
+</div>

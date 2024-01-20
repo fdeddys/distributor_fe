@@ -1,0 +1,60 @@
+<!-- 
+<table class="table table-striped table-bordered table-hover table-lg ">
+   
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td>Larry</td>
+      <td>the Bird</td>
+      <td>@twitter</td>
+    </tr>
+  </tbody>
+</table>
+
+<ngb-pagination [collectionSize]="70" [(page)]="page" aria-label="Default pagination"></ngb-pagination> -->
+
+<!-- <router-outlet></router-outlet> -->
+
+<ng2-slim-loading-bar></ng2-slim-loading-bar>
+<!-- <div [@routeAnimation]="getAnimationData(routerOutlet)"> -->
+  <div >  
+  <router-outlet>
+      <ngx-spinner
+        bdColor="rgba(51,51,51,0.8)"
+        size="large"
+        color="rgb(138, 157, 255)"
+        type="ball-scale-multiple"    
+      >
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <p style="font-size: 20px; color: rgb(185, 185, 252)">Please wait...</p>
+    </ngx-spinner>
+
+        <ngx-ui-loader></ngx-ui-loader>
+        <op-spinner></op-spinner>
+    </router-outlet>
+</div>

@@ -1,0 +1,71 @@
+<style>
+    input {
+        width: 100%;
+    }
+</style>
+<div class="modal-header" >
+    <h4 class="modal-title">
+        <span class="badge badge-light" style="color:cornflowerblue">Purchase Order Edit</span>
+    </h4>
+</div>
+<div class="modal-body">
+    <div *ngIf="purchaseOrderDetail">
+        <table class="table table-sm table-striped">
+            <tr>
+                <th colspan="2">
+                    <button type="button" class="btn btn-outline-primary" style="color:green">
+                        Status <span class="badge badge-light" style="color:red"> {{statusRec}} </span>
+                        <span class="badge badge-light" style="color:purple"> {{viewMsg}}</span>
+                        <span class="sr-only">unread messages</span>
+                    </button>
+                </th>
+            </tr>
+            <tr>
+                <td>ID</td>
+                <td><input type="text" disabled size="50%" [(ngModel)]=purchaseOrderDetail.id></td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td><input type="text" maxlength="250" size="50%" disabled [(ngModel)]=purchaseOrderDetail.product.name></td>
+            </tr>
+
+            <tr>
+                <td>Qty</td>
+                <td><input type="number" min="0" maxlength="100" size="50%" [(ngModel)]=purchaseOrderDetail.poQty></td>
+            </tr>
+
+            <tr *ngIf="uoms?.length>0">
+                <!-- {{uoms | json}} -->
+                <td>Satuan</td>
+                <td>
+                    <select [(ngModel)]="uomSelected" class="form-control"
+                        (change)="onChangeSatuan($event)"
+                        >
+                        <option *ngFor="let uom of uoms" [ngValue]="uom">
+                            {{uom.name}}
+                        </option>
+                    </select>
+                    <!-- {{uomSelected | json}} -->
+                    <!-- [ngModelOptions]="{standalone: true}" -->
+                </td>
+            </tr>
+
+            <tr>
+                <td>Price</td>
+                <td><input type="number" maxlength="100" size="50%" [(ngModel)]="currentPrice"></td>
+            </tr>
+
+           
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <div >
+        <button type="button" class="btn btn-outline-danger" (click)="save()">Save
+            <i class="fa fa-save fa-lg"></i>
+        </button>
+        <button type="button" class="btn btn-outline-dark" (click)="closeForm()">Close
+            <i class="fa fa-times fa-lg"></i>
+        </button>
+    </div>
+</div>

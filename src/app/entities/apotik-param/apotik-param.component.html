@@ -1,0 +1,44 @@
+<div class="card border-primary">
+  <div class="card-body">
+      <h5 class="card-title">PARAMETER</h5>
+     
+      <br>
+
+      <div style="height:400px; padding: 15px 15px 15px 15px;width: 100%; ">
+          <table class="table table-sm table-hover table-striped">
+            <colgroup>
+                <col span="1" style="width: 25%;">
+                <col span="1" style="width: 70%;">
+                <col span="1" style="width: 5%;">
+             </colgroup>
+
+              <thead>
+                  <tr>
+                      <th scope="col" >Name</th>
+                      <th scope="col" >Value</th>
+                      <th scope="col" >#</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let param of apotikParams">     
+                      <td>{{param.name}}</td>
+                      <td>
+                        <input type="text" style="width: 100%;" [(ngModel)]="param.value">
+                           
+                      </td>
+                      <td>
+                        <button type="button"
+                        (click)="update(param)" class="btn btn-outline-danger btn-sm">
+                        <i class="fa fa-check fa-lg"></i>
+                    </button>
+                    
+                      </td>
+                      
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+     
+  </div>
+
+</div>

@@ -1,0 +1,10 @@
+.modal-dialog {
+    width: 1200px;
+  }
+  
+  .modal-wide .modal-body {
+    overflow-y: auto;
+  }
+.modal-content {
+    width: 1200px;
+}

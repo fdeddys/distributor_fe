@@ -1,0 +1,63 @@
+<div class="card border-primary">
+    <div class="card-body">
+        <h5 class="card-title">Payment</h5>
+        <!-- SEARCH -->
+        <div>
+            <form>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label for="brandCodeInput">Payment No</label>
+                        <input type="text" class="form-control" id="brandCodeInput" [(ngModel)]='searchTerm.paymentNo'
+                            name="searchCode" placeholder="Enter payment No">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="brandNameInput">Name</label>
+                        <input type="text" class="form-control" id="brandNameInput" [(ngModel)]='searchTerm.name'
+                            name="searchName" placeholder="Enter Name">
+                    </div>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" (click)="onFilter()" class="btn mr-2 btn-outline-success btn-sm">Search <i
+                            class="fa fa-search fa-lg"></i></button>
+                    <button type="button" (click)="resetFilter()" class="btn mr-2 btn-outline-danger btn-sm">Reset <i
+                            class="fa fa-refresh fa-lg"></i></button>
+                    <button type="button" class="btn btn-outline-primary btn-sm" (click)="addNew()">Addnew
+                        <i class="fa fa-plus-circle fa-lg"></i></button>
+                </div>
+            </form>
+        </div>
+        <br>
+        <div style="height:400px; padding: 15px 15px 15px 15px; ">
+            <table class="table table-sm table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th scope="col">Payment No</th>
+                        <th scope="col" class='centerText' >Date</th>
+                        <th scope="col">Customer</th>
+                        <th scope="col" class='centerText' >Status</th>
+                        <th scope="col" class='rightText' >Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let payment of payments">
+                        <td>
+                            <button type="button" (click)="open(payment)" class="btn btn-outline-warning btn-sm">
+                                <i class="fa fa-list fa-lg"></i>
+                            </button>
+                        </td>
+                        <td>{{payment.paymentNo}}</td>
+                        <td class='centerText' >{{payment.paymentDate | date:'dd-MMM-yyyy'}}</td>
+                        <td>{{payment.Customer.name }}</td>
+                        <td class='centerText' >{{getStatus(payment.status)}} </td>
+                        <td class='rightText'>{{payment.totalOrder - payment.totalReturn | number:'0.0-0' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <ngb-pagination size="sm" [collectionSize]="totalData" [(page)]="curPage" [maxSize]="totalRecord"
+            (pageChange)="loadPage()" [boundaryLinks]="true">
+        </ngb-pagination>
+    </div>
+
+</div>

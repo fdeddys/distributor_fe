@@ -1,0 +1,58 @@
+
+
+<div class="background">
+
+    <div class="container">
+        <div class="row" >
+          <br> <br> <br>
+          <!-- <div class="col-md-8"> -->
+              
+              <!-- <div class="row" style="height : 100%;">
+                  <div style="height : 20%;" >
+                  </div>
+                  <div style="height : 100%;padding-top: 10%; position: relative; left: 0%;top: 10%">
+                      <img src="assets/images/logo_depan.png"
+                      alt="Paris"
+                      style="width: 150%;"
+                    >
+                  </div>
+                </div> -->
+          <!-- </div> -->
+          
+          <!-- <div class="col-md-6"> -->
+            <div class="col">
+
+                <div style="margin: auto; text-align: center;">
+                  <!-- <div style="height : 100%;" >
+                    
+                  </div> -->
+                  
+                  <br>
+                  <br>
+                  <br>
+                      <form method="post" action="#" role="login"  (ngSubmit)="connectToServer()">
+      
+                        <img class="profile-img" src="assets/images/logo-user.png" alt="">
+                        
+                        <input type="text" class="form-control" style="font-size: 12px; width: 30%;text-align: center;margin: auto;" name="nama" placeholder="User name" [(ngModel)]="credential.username" required autofocus>
+                        <input type="password" class="form-control"  style="font-size: 12px; width: 30%;text-align: center;margin: auto;" name ="pass" [(ngModel)]="credential.password" placeholder="Password" required>
+                        <div class="pwstrength_viewport_progress"></div>
+                        <!-- <div *ngIf="captchaError" class="error">Recaptcha not verified.</div>
+                         -->
+                         <br>
+                         <br>
+                        <button class="btn btn-lg btn-primary btn-block" style=" width: 30%;text-align: center;margin: auto;"  type="submit" >
+                          <!-- (click)="login()" -->
+                            Sign in</button>
+                      </form>
+                  
+                  
+                </div>
+     
+              <ngb-alert *ngIf="showAlert" (close)="showAlert=!showAlert">{{msgAlert}}</ngb-alert>  
+            </div>
+          </div>
+
+        <!-- </div> -->
+      </div>
+</div>

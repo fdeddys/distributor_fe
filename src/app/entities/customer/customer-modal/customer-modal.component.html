@@ -1,0 +1,79 @@
+<style>
+    input {
+        width: 100%;
+    }
+</style>
+<div class="modal-header" *ngIf="statusRec!=='View'">
+    <h4 class="modal-title">
+        <span class="badge badge-light" style="color:cornflowerblue">Customer</span>
+    </h4>
+</div>
+<div class="modal-body">
+    <table class="table table-sm table-striped">
+        <tr>
+            <th colspan="2">
+                <button type="button" class="btn btn-outline-primary" style="color:green">
+                    Status <span class="badge badge-light" style="color:red"> {{statusRec}} </span>
+                    <span class="badge badge-light" style="color:purple"> {{viewMsg}}</span>
+                    <span class="sr-only">unread messages</span>
+                </button>
+            </th>
+        </tr>
+        <tr>
+            <td>Code</td>
+            <td><input type="text" disabled size="50%" [(ngModel)]=customer.code></td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td><input type="text" maxlength="250" size="50%" [(ngModel)]=customer.name></td>
+        </tr>
+        <tr>
+            <td>Address line 1</td>
+            <td><input type="text" maxlength="250" size="50%" [(ngModel)]=customer.address1></td>
+        </tr>
+        <tr>
+            <td>Address line 2</td>
+            <td><input type="text" maxlength="250" size="50%" [(ngModel)]=customer.address2></td>
+        </tr>
+        <tr>
+            <td>Address line 3</td>
+            <td><input type="text" maxlength="250" size="50%" [(ngModel)]=customer.address3></td>
+        </tr>
+        <tr>
+            <td>Address line 4</td>
+            <td><input type="text" maxlength="250" size="50%" [(ngModel)]=customer.address4></td>
+        </tr>
+        <tr>
+            <td>Term Of Payment ( in days)</td>
+            <td><input type="text" maxlength="250" type="number" size="50%" [(ngModel)]=customer.top>  </td>
+        </tr>
+        <tr>
+            <td>Contact Person Name</td>
+            <td><input type="text" maxlength="250"  size="50%" [(ngModel)]=customer.contactPerson>  </td>
+        </tr>
+        <tr>
+            <td>Contact Person Phone</td>
+            <td><input type="text" maxlength="250" size="50%" [(ngModel)]=customer.phoneNumber>  </td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>
+                <select [(ngModel)]="statusSelected" class="form-control" [ngModelOptions]="{standalone: true}">
+                    <option *ngFor="let status of statuses" [value]="status">
+                        {{status}}
+                    </option>
+                </select>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="modal-footer">
+    <div *ngIf="statusRec!=='View' ">
+        <button type="button" class="btn btn-outline-danger" (click)="save()">Save
+            <i class="fa fa-save fa-lg"></i>
+        </button>
+        <button type="button" class="btn btn-outline-dark" (click)="closeForm()">Close
+            <i class="fa fa-times fa-lg"></i>
+        </button>
+    </div>
+</div>

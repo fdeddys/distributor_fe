@@ -1,0 +1,26 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "../node_modules/bootstrap/dist/css/bootstrap.css";
+
+@import "./vendor/prism.css";
+
+@import "../node_modules/ngx-toastr/toastr.css";
+
+
+table, th, td {
+    font-family: verdana;
+    font-size: 12px;
+    font-weight: 200;
+}
+
+* {
+    font-family: verdana;
+    font-size: 12px;
+    font-weight: 200;
+}
+
+ngb-typeahead-window {
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }

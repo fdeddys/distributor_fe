@@ -1,0 +1,75 @@
+<div class="card border-primary">
+    <div class="card-body">
+        <h5 class="card-title">Stock Opname</h5>
+        <!-- SEARCH -->
+        <div>
+            <form>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label for="brandCodeInput">Code</label>
+                        <input type="text" class="form-control" id="brandCodeInput" [(ngModel)]='searchTerm.code'
+                            name="searchCode" placeholder="Enter Code">
+                    </div>
+                    <!-- <div class="col-md-3 mb-3">
+                        <label for="brandNameInput">Name</label>
+                        <input type="text" class="form-control" id="brandNameInput" [(ngModel)]='searchTerm.name'
+                            name="searchName" placeholder="Enter Name">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="loookupDesctiptionInput">Description</label>
+                        <input type="text" class="form-control" id="loookupDesctiptionInput"
+                            [(ngModel)]='searchTerm.description' name="searchDescription"
+                            placeholder="Enter Description">
+                    </div> -->
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" (click)="onFilter()" class="btn mr-2 btn-outline-success btn-sm">Search <i
+                            class="fa fa-search fa-lg"></i></button>
+                    <button type="button" (click)="resetFilter()" class="btn mr-2 btn-outline-danger btn-sm">Reset <i
+                            class="fa fa-refresh fa-lg"></i></button>
+                    <button type="button" class="btn btn-outline-primary btn-sm" (click)="addNew()">Addnew
+                        <i class="fa fa-plus-circle fa-lg"></i></button>
+                </div>
+  
+            </form>
+        </div
+        >
+        <br>
+        <div style="height:400px; padding: 15px 15px 15px 15px; ">
+            <table class="table table-sm table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th scope="col">No</th>
+                        <th scope="col" class='centerText' >Date</th>
+                        <th scope="col" class='centerText' >Status</th>
+                        <th scope="col" class='rightText' >Total</th>
+                        <th scope="col">Note</th>
+                        <th scope="col" class='centerText'>Update by</th>
+                        <th scope="col" class='rightText' >Last Update</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let stockOpname of stockOpnames">
+                        <td>
+                            <button type="button" (click)="open(stockOpname)" class="btn btn-outline-warning btn-sm">
+                                <i class="fa fa-list fa-lg"></i>
+                            </button>
+                        </td>
+                        <td>{{stockOpname.stockOpnameNo}}</td>
+                        <td class='centerText' >{{stockOpname.stockOpnameDate | date:'dd-MMM-yyyy'}}</td>
+                        <td class='centerText' >{{getStatus(stockOpname.status)}} </td>
+                        <td class='rightText'>{{stockOpname.Total | number:'0.0-0' }}</td>
+                        <td>{{stockOpname.note}}</td>
+                        <td class='rightText'>{{stockOpname.lastUpdateBy  }}</td>
+                        <td class='rightText'>{{stockOpname.lastUpdate | date:'dd-MMM-yyyy' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <ngb-pagination size="sm" [collectionSize]="totalData" [(page)]="curPage" [maxSize]="totalRecord"
+            (pageChange)="loadPage()" [boundaryLinks]="true">
+        </ngb-pagination>
+    </div>
+  
+  </div>

@@ -1,0 +1,27 @@
+[
+    {
+        "menuDescription": "Verifier",
+        "status": "ACTIVE",
+        "menuId": 1
+    },
+    {
+        "menuDescription": "Eform Approval",
+        "status": "ACTIVE",
+        "menuId": 2
+    },
+    {
+        "menuDescription": "EDD Approval",
+        "status": "ACTIVE",
+        "menuId": 3
+    },
+    {
+        "menuDescription": "Workflow Monitoring",
+        "status": "ACTIVE",
+        "menuId": 4
+    },
+    {
+        "menuDescription": "Work in progress",
+        "status": "ACTIVE",
+        "menuId": 6
+    }
+]

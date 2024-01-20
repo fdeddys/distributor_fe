@@ -1,0 +1,179 @@
+<div class="card border-primary">
+    <div class="card-body">
+        <h5 class="card-title" style="color: tomato;">Adjustment</h5>
+
+        <div class="btn-group" role="group" *ngIf="adjustment">
+            <button type="button" class="btn btn-outline-info btn-sm" (click)="addNew()">Add New
+                <i class="fa fa-plus-circle fa-lg"></i>
+            </button>
+            <button type="button" *ngIf="adjustment.status === 0 || adjustment.status === 10"
+                class="btn btn-outline-success btn-sm" (click)="saveHdr('addnew', null)">Save
+                <i class="fa fa-save fa-lg"></i>
+            </button>
+            <button type="button" *ngIf="adjustment.status === 10" class="btn btn-outline-primary btn-sm"
+                (click)="approve()">Approve
+                <i class="fa fa-thumbs-o-up fa-lg"></i>
+            </button>
+            <button type="button" *ngIf="adjustment.status === 10  " class="btn btn-outline-danger btn-sm"
+                (click)="reject()">Cancel
+                <i class="fa fa-times fa-lg"></i>
+            </button>
+            <button type="button" *ngIf="adjustment.status === 20 " class="btn btn-outline-warning btn-sm"
+                (click)="preview()">Preview
+                <i class="fa fa-print fa-lg"></i>
+            </button>
+            <button type="button" class="btn btn-outline-info btn-sm" (click)="backToLIst()">Back
+                <i class="fa fa-list fa-lg"></i>
+            </button>
+        </div>
+        <br>
+        <br>
+        <div *ngIf="adjustment">
+            <table class="table table-sm table-striped">
+                <thead>
+                    <tr>
+                        <td style="width: 15%;"></td>
+                        <td style="width: 35%;"></td>
+                        <td style="width: 15%;"></td>
+                        <td style="width: 35%;"></td>
+                    </tr>
+                </thead>
+                <tbody style="color: cornflowerblue;">
+                    <tr>
+                        <td>Adjustment No</td>
+                        <td><input type="text" readonly size="50%" [(ngModel)]="adjustment.adjustmentNo">
+                            [{{adjustment.id}}]
+                        </td>
+                        <!-- < -->
+                        <td>Total</td>
+                        <td>
+                            <span style="color: blue;">
+                                {{ adjustment.total | number:'0.0-0'}}
+                            </span>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Date</td>
+                        <td>
+                            <input type="text" ngbDatepicker #d="ngbDatepicker" readonly [(ngModel)]="selectedDate" />
+                            <button (click)="d.toggle()">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </td>
+                        <td>Note</td>
+                        <td rowspan="2"><textarea rows="3" size="100%" style="min-width: 90%"  [(ngModel)]="adjustment.note"></textarea>
+                    </tr>
+                    <tr>
+                        <td>Status</td>
+                        <td>
+                            <!-- <input type="text" readonly size="50%" [(ngModel)]="adjustment.status"> -->
+                            {{getStatus(adjustment.status)}} 
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Warehouse </td>
+                        <td>
+                            <select [(ngModel)]="warehouseSelected" class="form-control"
+                                [ngModelOptions]="{standalone: true}">
+                                <option *ngFor="let warehouse of warehouses" [value]="warehouse">
+                                    {{warehouse.name}}
+                                </option>
+                            </select>
+                        </td>
+                        <td>{{adjustment.warehouseId}}</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        <div>
+            <table class="table table-sm table-striped">
+                <tbody style="color: hotpink; background-color: ghostwhite;">
+                    <tr>
+                        <td style="width: 30%;">Product</td>
+                        <td style="width: 15%;">Hpp</td>
+                        <td style="width: 5%;">Qty</td>
+                        <td style="width: 5%;">HPP</td>
+                        <td style="width: 10%;">#</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="typeahead-http" type="text" [(ngModel)]="model" [ngbTypeahead]="search"  class="form-control"
+                                [resultFormatter]="formatterProdList" [inputFormatter]="formatterProdInput" size="50%"
+                                placeholder="search product name" (selectItem)="getItem($event)" />
+                        </td>
+                        <td>
+                            {{hppAdded}}
+                        </td>
+                        <td>
+                            <input type="number" [(ngModel)]="qtyAdded" placeholder="input qty">
+                        </td>
+                        <td>
+                            {{uomAddedName}}
+                        </td>
+                        <td *ngIf="adjustment">
+                            <button type="button" *ngIf="adjustment.status == 10 " class="btn btn-outline-info btn-sm"
+                                (click)="addNewItem()">
+                                <i class="fa fa-check fa-lg"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="adjustment">
+            <!-- {{adjustmentDetails | json}} -->
+            <div style="height: 380px; padding: 5px 15px 5px 15px; ">
+                <table class="table table-sm table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th *ngIf="adjustment"></th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Hpp</th>
+                            <th scope="col">Qty</th>
+                            <th scope="col">UOM</th>
+                            <th scope="col">HPP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let adjustmentDetail of adjustmentDetails">
+                            <td *ngIf="adjustment">
+                                <button type="button" *ngIf="adjustment.status == 10"
+                                    (click)="confirmDelItem(adjustmentDetail)" class="btn btn-outline-danger btn-sm">
+                                    <i class="fa fa-trash fa-lg"></i>
+                                </button>
+                            </td>
+                            <td>{{adjustmentDetail.product.name}}</td>
+                            <td>{{adjustmentDetail.hpp | number:'0.0-0' }}</td>
+                            <!-- <td>{{adjustmentDetail.qty | number:'0.0-0' }}</td> -->
+                            <td>
+                                <input type="number" [(ngModel)]="adjustmentDetail.qty" placeholder="input qty">
+                                <button type="button"  *ngIf="adjustment.status == 10 || adjustment.status == 0"
+                                    (click)="updateQty(adjustmentDetail)" class="btn btn-outline-danger btn-sm">
+                                    <i class="fa fa-check fa-lg"></i>
+                                </button>
+                            </td>
+                            <td>{{adjustmentDetail.uom.name }}</td>
+                            <td>{{ (adjustmentDetail.hpp * adjustmentDetail.qty )  | number:'0.0-0'  }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <ngb-pagination size="sm" [collectionSize]="totalData" [(page)]="curPage" [maxSize]="totalRecord"
+                (pageChange)="loadPage()" [boundaryLinks]="true">
+            </ngb-pagination>
+            <div>
+
+                total data : {{totalData}} / {{totalRecord}}
+            </div>
+        </div>
+
+
+    </div>
+
+</div>

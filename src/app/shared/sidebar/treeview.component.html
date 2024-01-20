@@ -1,0 +1,25 @@
+<!-- <li *ngFor="let link of links" [attr.data-toggle]="link.children.length > 0 ? 'collapse' : null"
+    [attr.data-target]="link.children.length > 0 ? '#mm' : null"
+    [ngClass]="link.children.length > 0 ? 'collapsed' : null"> -->
+<ng-container *ngFor="let link of links">
+    <li [attr.data-toggle]="link.children.length > 0 ? 'collapse' : null"
+    [attr.data-target]="link.children.length > 0 ? '#mm' : null"
+    [ngClass]="link.children.length > 0 ? 'collapsed' : null"
+    (click)="link.collapsed = !link.collapsed">
+        <a *ngIf="link.children.length > 0" [attr.aria-expanded]="!link.collapsed">
+            <i class="fa {{link.icon}} fa-lg"></i>
+             {{link.description}}
+            <span class="arrow"></span>
+        </a>
+        <a *ngIf="link.children.length === 0" href="#/main/{{link.link}}">
+            <i class="fa {{link.icon}} fa-lg"></i> 
+            {{link.description}}
+        </a>
+    </li>
+    <div *ngIf="link.children.length > 0" id="collapseExample" [ngbCollapse]="!link.collapsed"
+        [ngStyle]="{'margin-left': link.level > 1 ? '10px' : null}">
+        <ul class="sub-menu" id="mm">
+            <op-tree-view [links]="link.children"></op-tree-view>
+        </ul>
+    </div>
+</ng-container>

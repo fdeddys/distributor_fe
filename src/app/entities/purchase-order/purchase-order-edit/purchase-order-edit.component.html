@@ -1,0 +1,193 @@
+<div class="card border-primary">
+    <div class="card-body">
+        <h5 class="card-title" style="color: tomato;">Purchase Order</h5>
+
+        <div class="btn-group" role="group" *ngIf="purchaseOrder">
+            <button type="button" class="btn btn-outline-info btn-sm" (click)="addNew()">Add New
+                <i class="fa fa-plus-circle fa-lg"></i>
+            </button>
+            <button type="button" *ngIf="purchaseOrder.status === 0 || purchaseOrder.status === 10" class="btn btn-outline-success btn-sm" (click)="saveHdr('addnew', null)">Save
+                <i class="fa fa-save fa-lg"></i>
+            </button>
+            <button type="button"  *ngIf="purchaseOrder.status === 10" class="btn btn-outline-primary btn-sm" (click)="approve()">Submit
+                <i class="fa fa-thumbs-o-up fa-lg"></i>
+            </button>
+            <button type="button" *ngIf="purchaseOrder.status === 20 || purchaseOrder.status === 10  "  class="btn btn-outline-danger btn-sm" (click)="reject()">Cancel
+                <i class="fa fa-times fa-lg"></i>
+            </button>
+            <button type="button" *ngIf="purchaseOrder.status === 20 "  class="btn btn-outline-dark btn-sm" (click)="cancelSubmit()">Cancel Submit
+                <i class="fa fa-check fa-lg"></i>
+            </button>
+            <button type="button" *ngIf="purchaseOrder.status === 20 " class="btn btn-outline-warning btn-sm" (click)="preview()">Preview
+                <i class="fa fa-print fa-lg"></i>
+            </button>
+            <button type="button" class="btn btn-outline-info btn-sm" (click)="backToLIst()">Back
+                <i class="fa fa-list fa-lg"></i>
+            </button>
+        </div>
+        <br>
+        <br>
+        <div *ngIf="purchaseOrder">
+            <table class="table table-sm table-striped">
+                <tbody style="color: cornflowerblue;">
+                    <tr>
+                        <td>Purchase Order No</td>
+                        <td><input type="text" disabled readonly  [(ngModel)]="purchaseOrder.purchaseOrderNo">
+                            [{{purchaseOrder.id}}]
+                        </td>
+                        <td>Total</td>
+                        <td>
+                            <span style="color: blue;">
+                                    {{ total | number:'0.0-0'}}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Date</td>
+                        <td>
+                            <input type="text" ngbDatepicker #d="ngbDatepicker" readonly [(ngModel)]="selectedDate" />
+                            <button (click)="d.toggle()">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </td>
+                        <td>Tax <input type="checkbox" [(ngModel)]="purchaseOrder.isTax" (ngModelChange)="checkTax()"></td>
+                        <td>
+                            <span style="color: blue;">
+                                    {{ taxAmount | number:'0.0-0'}}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Supplier</td>
+                        <td *ngIf="suppliers">
+                            <!-- <input id="typeahead-basic" type="text" 
+                                [(ngModel)]="supplierSelected"
+                                [ngbTypeahead]="searchSupplier" 
+                                [resultFormatter]="formatter"
+                                [inputFormatter]="formatter" />
+                                [ {{supplierSelected.id}} ]  -->
+                            <select [(ngModel)]="supplierSelected" style="width: 90%;"  class="form-control" [ngModelOptions]="{standalone: true}">
+                                <option *ngFor="let supplier of suppliers" [value]="supplier.id">
+                                    {{supplier.name}}
+                                </option>
+                            </select>
+                        </td>
+                        <td>Grand total</td>
+                        <td>
+                            <span style="color: blue;">
+                                    {{ grandTotal | number:'0.0-0'}}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Status</td>
+                        <td style="width: 30%;">
+                            {{getStatus(purchaseOrder.status)}}
+                        </td>
+                        <td>Note</td>
+                        <td rowspan="2"><textarea rows="3" style="min-width: 90%" [(ngModel)]="purchaseOrder.note"></textarea>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        <div>
+            <table class="table table-sm table-striped" style="width: 100%;" >
+                <tbody style="color: hotpink; background-color: ghostwhite;">
+                    <tr>
+                        <td style="width: 30%;">Product</td>
+                        <td style="width: 5%;">Qty</td>
+                        <td style="width: 15%;">Unit</td>
+                        <td style="width: 15%;">Price</td>
+                        <td style="width: 5%;">Disc[%]</td>
+                        <td style="width: 20%;padding-right: 5px;text-align: right;">Total</td>
+                        <td style="width: 10%;">#</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="typeahead-http" type="text" 
+                                [(ngModel)]="model" 
+                                [ngbTypeahead]="search"
+                                [resultFormatter]="formatterProdList" 
+                                [inputFormatter]="formatterProdInput" 
+                                size="50%"
+                                style="width: 100%;"
+                                placeholder="search product name" 
+                                (selectItem)="getItem($event)"
+                                /> 
+                        </td>
+                        <td>
+                            <input type="number" style="width: 100%;"[(ngModel)]="qtyAdded" placeholder="input qty" >
+                        </td>
+                        <td>
+                            <!-- {{uomAddedName}} -->
+                            <select [(ngModel)]="poUom" class="form-control" 
+                                (change)="onChangeUOM($event.target.value)"
+                                [ngModelOptions]="{standalone: true}">
+                                <option *ngFor="let uomList of uomLists" [value]="uomList.id">
+                                    {{uomList.name}}
+                                </option>
+                            </select>
+                            <!-- {{poUom }} -->
+                        </td>
+                        <td>
+                            <!-- <input type="number" style="width: 100%;"[(ngModel)]="priceAdded"  > -->
+                            {{priceAdded * poUomQty}}
+                        </td>                       
+                        <td>
+                            <input type="number" style="width: 100%;"[(ngModel)]="discAdded " placeholder="input disc" >
+                        </td>
+                        <td style="text-align: right;padding-right: 5px;" >
+                            {{  ( (priceAdded*qtyAdded*poUomQty) - (priceAdded*qtyAdded*poUomQty*discAdded/100)  ) | number:'0.0-0' }}
+                        </td>
+                        <td *ngIf ="purchaseOrder">
+                            <button type="button" style="width: 100%;" *ngIf="purchaseOrder.status === 10"  class="btn btn-outline-info btn-sm" (click)="addNewItem()">
+                                <i class="fa fa-check fa-lg"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="purchaseOrder">
+            <div style=" padding: 5px 15px 5px 15px; ">
+                <!-- height:350px; -->
+                <table class="table table-sm table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th *ngIf ="purchaseOrder"></th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Qty</th>
+                            <th scope="col">Unit</th>
+                            <th scope="col">Disc [%]</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let purchaseOrderDetail of purchaseOrderDetails">
+                            <td *ngIf ="purchaseOrder">
+                                <button type="button" *ngIf="purchaseOrder.status === 10"  (click)="confirmDelItem(purchaseOrderDetail)" class="btn btn-outline-danger btn-sm">
+                                    <i class="fa fa-trash fa-lg"></i>
+                                </button>
+                                <button type="button" *ngIf="purchaseOrder.status === 10"  (click)="openEdit(purchaseOrderDetail)" class="btn btn-outline-primary btn-sm">
+                                    <i class="fa fa-pencil fa-lg"></i>
+                                </button>
+                            </td>
+                            <td>{{purchaseOrderDetail.product.name}}</td>
+                            <td>{{purchaseOrderDetail.poPrice | number:'0.0-0' }}</td>
+                            <td>{{purchaseOrderDetail.poQty | number:'0.0-0' }}</td>
+                            <td>{{purchaseOrderDetail.poUom.name}}</td>
+                            <td>{{purchaseOrderDetail.disc1  }}</td>
+                            <td>{{ purchaseOrderDetail.price * purchaseOrderDetail.qty * ((100 - purchaseOrderDetail.disc1 ) /100)   | number:'0.0-0'  }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <ngb-pagination size="sm" [collectionSize]="totalData" [(page)]="curPage" [maxSize]="totalRecord"
+                (pageChange)="loadPage()" [boundaryLinks]="true">
+            </ngb-pagination>
+        </div>
+    </div>
+
+</div>

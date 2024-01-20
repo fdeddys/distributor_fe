@@ -1,0 +1,336 @@
+<div class="card border-primary">
+        <div class="card-body">
+            <h5 class="card-title" style="color: tomato;">Receiving</h5>
+    
+            <div class="btn-group" role="group" *ngIf="receive">
+                <button type="button" class="btn btn-outline-info btn-sm" (click)="addNew()">Add New
+                    <i class="fa fa-plus-circle fa-lg"></i>
+                </button>
+                <button type="button" *ngIf="receive.status === 0 || receive.status === 10" class="btn btn-outline-success btn-sm" (click)="saveHdr('addnew', null)">Save
+                    <i class="fa fa-save fa-lg"></i>
+                </button>
+                <button type="button"  *ngIf="receive.status === 10" class="btn btn-outline-primary btn-sm" (click)="approve()">Submit
+                    <i class="fa fa-thumbs-o-up fa-lg"></i>
+                </button>
+                <button type="button" *ngIf="receive.status === 10  "  class="btn btn-outline-danger btn-sm" (click)="reject()">Reject
+                    <i class="fa fa-times fa-lg"></i>
+                </button>
+                <button type="button" *ngIf="receive.status === 20 || receive.status === 50 " class="btn btn-outline-warning btn-sm" (click)="preview()">Preview
+                    <i class="fa fa-print fa-lg"></i>
+                </button>
+                <button type="button" class="btn btn-outline-info btn-sm" (click)="backToLIst()">Back
+                    <i class="fa fa-list fa-lg"></i>
+                </button>
+            </div>
+            <br>
+            <br>
+            <div *ngIf="receive">
+                <table class="table table-sm table-striped">
+                    <tbody style="color: cornflowerblue;">
+                        <tr>
+                            <td>Receive No</td>
+                            <td><input type="text" disabled readonly  [(ngModel)]="receive.receiveNo">
+                                [{{receive.id}}]
+                            </td>
+                            <!-- < -->
+                            <td>Total</td>
+                            <td>
+                                <span style="color: blue;">
+                                    {{ total | number:'0.0-0'}}
+                                </span>
+                                <!-- <input type="text" size="50%" [(ngModel)]="total"> -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Date</td>
+                            <td>
+                                <input type="text" ngbDatepicker #d="ngbDatepicker" readonly [(ngModel)]="selectedDate" style="margin-right: 5px;" />
+                                <button (click)="d.toggle()" class="btn btn-outline-success btn-sm">
+                                    <i class="fa fa-calendar"></i>
+                                </button>
+                            </td>
+                            <td>Tax <input type="checkbox" [(ngModel)]="isTax" (ngModelChange)="checkTax()"></td>
+                            <td>
+                                <!-- <input type="text" readonly size="50%" [(ngModel)]="taxAmount"> -->
+                                <span style="color: blue;">
+                                        {{ taxAmount | number:'0.0-0'}}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Supplier</td>
+                            <td *ngIf="suppliers">
+                                <!-- <input id="typeahead-basic" type="text"
+                                    [attr.disabled]="receive.poNo!='' ? true : null " 
+                                    [(ngModel)]="supplierSelected"
+                                    [ngbTypeahead]="searchSupplier" 
+                                    [resultFormatter]="formatter"
+                                    [inputFormatter]="formatter" />
+                                    [ {{supplierSelected.id}} ] 
+                                    {{receive.poNo}} -->
+                                <select [(ngModel)]="supplierSelected" 
+                                    style="width: 80%;"  
+                                    class="form-control" 
+                                    #supp
+                                    (change)="onChangeSupp($event, supp.value)"
+                                    [ngModelOptions]="{standalone: true}">
+                                    <option *ngFor="let supplier of suppliers" [value]="supplier.id">
+                                        {{supplier.name}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td>Grand total</td>
+                            <td>
+                                <!-- <input type="text" readonly size="50%" [(ngModel)]="grandTotal"> -->
+                                <span style="color: blue;">
+                                        {{ grandTotal | number:'0.0-0'}}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>
+                                {{getStatus(receive.status)}}
+                                <!-- <input type="text" readonly size="50%" [(ngModel)]="receive.status">  -->
+                            </td>
+                            <td>Warehouse</td>
+                            <td>
+                                <select [(ngModel)]="warehouseSelected" class="form-control"
+                                    [ngModelOptions]="{standalone: true}">
+                                    <option *ngFor="let warehouse of warehouses" [value]="warehouse">
+                                        {{warehouse.name}}
+                                    </option>
+                                </select>
+                                <!-- {{warehouseSelected.id }} -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Receive By PO
+                            </td>
+                            <td>
+                                <button (click)="loadPO()"  class="btn btn-outline-warning btn-sm" style="margin-right: 5px;">
+                                    Search PO  <i class="fa fa-search fa-lg"></i>
+                                </button>
+                                <button (click)="removePO()"  class="btn btn-outline-danger btn-sm" >
+                                    Remove PO  <i class="fa fa-times fa-lg"></i>
+                                </button>
+                                <br>
+                                 {{ receive.poNo}}
+                            </td>
+                            <td>Note</td>
+                            <td rowspan="2"><textarea  [(ngModel)]="receive.note" rows="3" size="100%" style="min-width: 90%"></textarea>
+                        </tr>
+                     
+                    </tbody>
+                </table>
+            </div>
+            <hr>
+            <div >
+                <table class="table table-sm table-striped;  border-collapse: collapse; width:100%; " >
+                    <tbody style="color: hotpink; background-color: ghostwhite;">
+                        <tr>
+                            <td style="width: 25%;">Product</td>
+                            <td style="width: 10%;">Price</td>
+                            <td style="width: 5%;" >Qty Small</td>
+                            <td style="width: 5%;">Unit Small</td>
+                            <td style="width: 5%;">Qty Big</td>
+                            <td style="width: 5%;">Unit Big</td>
+                            <td style="width: 5%;">Disc</td>
+                            <td style="width: 5%;">Disc 2</td>
+                            <td style="width: 10%;">Batch no</td>
+                            <td style="width: 5%; ">Expired</td>
+                            <td style="width: 7%;">Total</td>
+                            <td style="width: 2%; ">#</td>
+                        </tr>
+                        <tr>
+                            <td >
+                                <input id="typeahead-http" type="text" 
+                                    [(ngModel)]="model" 
+                                    [ngbTypeahead]="search"
+                                    [resultFormatter]="formatterProdList" 
+                                    [inputFormatter]="formatterProdInput" 
+                                    placeholder="search product name" 
+                                    (selectItem)="getItem($event)"
+                                    size="50%"
+                                    style="width: 100%;"
+                                    /> 
+                            </td>
+                            <td>
+                                <input type="number" style="width: 100%;" [(ngModel)]="priceAdded"  >
+                            </td>
+                            <td>
+                                <input type="number" style="width: 100%;" [(ngModel)]="qtyAdded" placeholder="input qty" >
+                            </td>
+                            <td>
+                                <div style="width: 100%;">
+                                    {{uomAddedName}}
+                                </div>
+                            </td>
+                            <td>
+                                <input type="number" style="width: 100%;" [(ngModel)]="qtyBoxAdded"  placeholder="input qty" >
+                            </td>
+                            <td>
+                                <div style="width: 100%;">
+                                    {{uomBoxAddedName}} [ {{uomQty}}]
+                                </div>
+                            </td>
+
+                            <td>
+                                <input type="number" style="width: 100%;"[(ngModel)]="discAdded " placeholder="input disc" >
+                            </td>
+                            <td>
+                                <input type="number" style="width: 100%;"[(ngModel)]="disc2Added " placeholder="input disc" >
+                            </td>
+                            <td>
+                                <input type="text" style="width: 100%;" [(ngModel)]="batchNo" placeholder="input batch" >
+                            </td>
+                            <td>
+
+                                <!-- <input type="text" ngbDatepicker #d="ngbDatepicker"  placeholder="yyyy-mm-dd" [(ngModel)]="expiredDate" style="margin-right: 5px;" /> -->
+                                <input type="text" style="width: 100%;" placeholder="yyyy-mm-dd" [(ngModel)]="expiredDate" style="margin-right: 5px;" />
+                                
+                                <!-- 
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                {{selectedDate | json}}
+                                                <td>
+                                                    <button (click)="d.toggle()" class="btn btn-outline-success btn-sm">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </table> 
+                                    </td>-->
+                            </td>
+                            <td>
+                                <!-- {{  ( (priceAdded*qtyAdded) - discAdded  ) | number:'0.0-0' }} -->
+                                {{ getSubTotal( priceAdded, qtyAdded, discAdded, disc2Added) | number:'0.0-0' }}
+                            </td>
+                            <td *ngIf ="receive">
+                                <button type="button"  *ngIf="receive.status === 10"  class="btn btn-outline-info btn-sm" (click)="addNewItem()">
+                                    <i class="fa fa-check fa-lg"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="receive">
+                <!-- {{receiveDetails | json}} -->
+                <div style=" padding: 5px 15px 5px 15px; ">
+                    <!-- height:430px; -->
+                    <table class="table table-sm table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th *ngIf ="receive"></th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Price small uom</th>
+
+                                <th scope="col">Qty Big</th>
+                                <th scope="col">Unit Big</th>
+
+                                <th scope="col">Qty Small</th>
+                                <th scope="col">Unit Small</th>
+
+                                <th scope="col">Disc [%]</th>
+                                <th scope="col">Disc 2 [%]</th>
+                                <th scope="col">Batch no</th>
+                                <th scope="col">Expired Date</th>
+                                <th scope="col">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let receiveDetail of receiveDetailShow">
+                                <td *ngIf ="receive">
+                                    <button type="button" *ngIf="receive.status === 10"  (click)="confirmDelItem(receiveDetail)" class="btn btn-outline-danger btn-sm">
+                                        <i class="fa fa-trash fa-lg"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <input type="checkbox"  (change)="fieldsChange($event, receiveDetail)" >
+                                </td>
+                                <td>{{receiveDetail.product.name}}</td>
+                                <td>
+                                    <input type="number" [(ngModel)]="receiveDetail.price" style="width: 100px;" >
+                                    <!-- {{receiveDetail.price | number:'0.0-0' }} -->
+                                </td>
+
+                                <td>
+                                    <input type="number" style="width: 75px;" [(ngModel)]="receiveDetail.qtyUomBig " placeholder="input " >
+                                    <!-- {{receiveDetail.qty | number:'0.0-0' }} -->
+                                </td>
+                                <td>
+                                    {{receiveDetail.bigUom.name }} [ {{receiveDetail.product.qtyUom}}]
+                                </td>
+
+                                <td>
+                                    <input type="number" style="width: 75px;" [(ngModel)]="receiveDetail.qtyUomSmall " placeholder="input " >
+                                    <!-- {{receiveDetail.qty | number:'0.0-0' }} -->
+                                </td>
+                                <td>
+                                    {{receiveDetail.smallUom.name}}</td>
+                                <td>
+                                    <input type="number" style="width: 75px;" [(ngModel)]="receiveDetail.disc1 "  >
+                                    <!-- {{receiveDetail.disc1  }} -->
+                                </td>
+                                <td>
+                                    <input type="number" style="width: 75px;" [(ngModel)]="receiveDetail.disc2 "  >
+                                    <!-- {{receiveDetail.disc1  }} -->
+                                </td>
+                                <td>
+                                    <input type="text" [(ngModel)]="receiveDetail.batchNo "  >
+                                </td>
+                                <td>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <input type="text"  [(ngModel)]="receiveDetail.ed" placeholder="yyyy-mm-dd" style="margin-right: 5px;" />
+                                            </td>
+                                            <td>
+                                                <!-- <button (click)="d.toggle()" class="btn btn-outline-success btn-sm">
+                                                    <i class="fa fa-calendar"></i>
+                                                </button> -->
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+
+                                <td>
+                                    <!-- {{ receiveDetail.price * receiveDetail.qty * ((100 - receiveDetail.disc1 ) /100)   | number:'0.0-0'  }} -->
+                                    {{getDetailTotalPerRow(receiveDetail)  | number:'0.0-0' }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div>
+                    <table style="width: 100%; padding: 5px 15px 5px 15px; ">
+                        <tr>
+                            <td style="text-align: left;">
+                                <button type="button"  *ngIf="receive.status === 10"  class="btn btn-outline-danger btn-sm" (click)="confirmDeleteMulti()">
+                                    Delete multiple <i class="fa fa-trash fa-lg"></i>
+                                </button>
+                            </td>
+                            <td style="width: 50%;">
+                                <ngb-pagination size="sm" [collectionSize]="totalRecord" [(page)]="curPage" [maxSize]="10"  [maxSize]="5"
+                                    (pageChange)="loadPage()" [boundaryLinks]="true">
+                                </ngb-pagination>
+                            </td>
+                            <td style="text-align: right;">
+                                <button type="button"  *ngIf="receive.status === 10"  class="btn btn-outline-info btn-sm" (click)="updateDetail()">
+                                    Update Detail <i class="fa fa-upload fa-lg"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <!-- totalrec:{{totalRecord}} curpage:{{curPage}} -->
+            </div>   
+        </div>
+    
+    </div>

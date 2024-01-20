@@ -1,0 +1,118 @@
+<div class="card border-primary">
+    <div class="card-body">
+        <h5 class="card-title" style="color: tomato;">Search Batch and Expired</h5>
+
+        <div >
+            <table class="table table-sm table-striped">
+                <thead>
+                    <td style="width: 15%;"> </td>
+                    <td style="width: 50%;"> </td>
+                    <td style="width: 15%;"> </td>
+                    <td style="width: 20%;"> </td>
+                </thead>
+                <tbody style="color: cornflowerblue;">
+
+                    <tr>
+                        <td>Product Name :</td>
+                        <td>
+                            <input type="text"  size="50%" [(ngModel)]="productName">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Batch No:</td>
+                        <td>
+                            <input type="text"  size="50%" [(ngModel)]="batchNo">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Expired Date Between</td>
+                        <td>
+                            <input type="text" ngbDatepicker #d1="ngbDatepicker"  [(ngModel)]="selectedDateStart" />
+                            <button (click)="d1.toggle()">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                             and 
+                            <input type="text" ngbDatepicker #d2="ngbDatepicker"  [(ngModel)]="selectedDateEnd" />
+                            <button (click)="d2.toggle()">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="button"  class="btn btn-outline-primary btn-sm" (click)="preview()">Preview
+                                <i class="fa fa-print fa-lg"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        
+        <div >
+            <!-- {{receiveDetails | json}} -->
+            <div style="height:350px; padding: 5px 15px 5px 15px; ">
+                <table class="table table-sm table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col"> RECEIVING </th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Qty Receive</th>
+                            <th scope="col">Qty Warehouse</th>
+                            <th scope="col">UOM</th>
+                            <th scope="col">Batch No</th>
+                            <th scope="col">Expired Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let receivingDetail of receivingDetails ">
+                            <td>
+                                <button type="button" (click)="openStock(receivingDetail.product)" class="btn btn-outline-warning btn-sm">
+                                    View <i class="fa fa-list fa-lg"></i>
+                                 </button>
+                            </td>
+                            <td>{{receivingDetail.product.name   }}</td>
+                            <td>{{receivingDetail.qty}}</td>
+                            <td>{{receivingDetail.qtyWh}}</td>
+                            <td>{{receivingDetail.uom.name }}</td>
+                            <td>{{receivingDetail.batchNo  }}</td>
+                            <td>{{receivingDetail.ed }}</td>
+                        </tr>
+                     </tbody>
+                </table>
+            </div>
+            <ngb-pagination size="sm" [collectionSize]="totalData" [(page)]="curPage" [maxSize]="totalRecord"
+                (pageChange)="loadPage(curPage)" [boundaryLinks]="true">
+            </ngb-pagination>
+        </div>
+
+        <hr>
+        <h3>Stock</h3>
+        <div style="height:200px; padding: 15px 15px 15px 15px; " >
+            <table class="table table-sm table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Code</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Qty</th>
+                        <th scope="col">UOM</th>
+                        <th scope="col">Sell Price</th>
+                    </tr>
+                </thead>
+                <tbody >
+                    <tr *ngFor="let stock of stocks ">
+                        <td>{{stock.warehouse.code}}</td>
+                        <td>{{stock.warehouse.name}}</td>
+                        <td>{{stock.qty}}</td>
+                        <td>{{uomSelected}}</td>
+                        <td>{{sellPriceSelected |  number:'0.0-0'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,39 @@
+<div class="card border-primary">
+    <div class="card-body">
+        <h5 class="card-title">Report Sales</h5>
+        <div>
+            <form>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label for="brandNameInput">Tanggal Awal</label>
+                        <div>
+                            <input type="text" ngbDatepicker #d1="ngbDatepicker" readonly [(ngModel)]="selectedDate1" [ngModelOptions]="{standalone: true}"/>
+                            <button (click)="d1.toggle()">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="brandNameInput">Tanggal Akhir</label>
+                        <div>
+                            <div>
+                                <input type="text" ngbDatepicker #d2="ngbDatepicker" readonly [(ngModel)]="selectedDate2" [ngModelOptions]="{standalone: true}"/>
+                                <button (click)="d2.toggle()">
+                                    <i class="fa fa-calendar"></i>
+                                </button>
+                            </div>
+    
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" (click)="onPreview()" class="btn mr-2 btn-outline-success btn-sm">Preview <i
+                        class="fa fa-print fa-lg"></i></button>
+                </div>
+            </form>
+        </div
+        >
+        <br>
+   </div>
+  
+  </div>

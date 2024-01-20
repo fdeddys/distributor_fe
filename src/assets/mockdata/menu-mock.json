@@ -1,0 +1,242 @@
+[
+    {
+        "id": 1,
+        "name": "verifier",
+        "description": "Verifier",
+        "link": "access-matrix",
+        "icon": "fa-check",
+        "parentId": null
+    },
+    {
+        "id": 2,
+        "name": "eform_approval",
+        "description": "Eform Approval",
+        "link": "eform",
+        "icon": "fa-thumbs-up",
+        "parentId": null
+    },
+    {
+        "id": 3,
+        "name": "edd_approval",
+        "description": "EDD Approval",
+        "link": "edd",
+        "icon": "fa-exclamation",
+        "parentId": null
+    },
+    {
+        "id": 4,
+        "name": "workflow_monitoring",
+        "description": "Workflow Monitoring",
+        "link": "",
+        "icon": "fa-tv",
+        "parentId": null
+    },
+    {
+        "id": 5,
+        "name": "merchant_maintenance",
+        "description": "Merchant Maintenance",
+        "link": "",
+        "icon": "fa-wrench",
+        "parentId": null
+    },
+    {
+        "id": 6,
+        "name": "work_in_progress",
+        "description": "Work in progress",
+        "link": "work-in-progress",
+        "icon": "",
+        "parentId": 4
+    },
+    {
+        "id": 7,
+        "name": "merchant_group",
+        "description": "Merchant Group",
+        "link": "merchantGroup",
+        "icon": "",
+        "parentId": 5
+    },
+    {
+        "id": 8,
+        "name": "merchant",
+        "description": "Merchant",
+        "link": "merchant",
+        "icon": "",
+        "parentId": 5
+    },
+    {
+        "id": 9,
+        "name": "report",
+        "description": "Report",
+        "link": "",
+        "icon": "fa-gift",
+        "parentId": null
+    },
+    {
+        "id": 10,
+        "name": "report_1",
+        "description": "Report 1",
+        "link": "",
+        "icon": "",
+        "parentId": 9
+    },
+    {
+        "id": 11,
+        "name": "my_task",
+        "description": "My Task",
+        "link": "",
+        "icon": "fa-tasks",
+        "parentId": null
+    },
+    {
+        "id": 12,
+        "name": "report_2",
+        "description": "Report 2",
+        "link": "",
+        "icon": "",
+        "parentId": 9
+    },
+    {
+        "id": 13,
+        "name": "master_data_approval",
+        "description": "Master Data Approval",
+        "link": "masterDataApproval",
+        "icon": "",
+        "parentId": 11
+    },
+    {
+        "id": 14,
+        "name": "view_activity",
+        "description": "View Activity",
+        "link": "",
+        "icon": "fa-dashboard",
+        "parentId": null
+    },
+    {
+        "id": 15,
+        "name": "system_administration",
+        "description": "System Administration",
+        "link": "",
+        "icon": "fa-user",
+        "parentId": null
+    },
+    {
+        "id": 16,
+        "name": "system_parameter",
+        "description": "System Parameter",
+        "link": "system-parameter",
+        "icon": "",
+        "parentId": 15
+    },
+    {
+        "id": 17,
+        "name": "teroris",
+        "description": "Teroris",
+        "link": "teroris",
+        "icon": "",
+        "parentId": 15
+    },
+    {
+        "id": 18,
+        "name": "region",
+        "description": "Region",
+        "link": "region",
+        "icon": "",
+        "parentId": 15
+    },
+    {
+        "id": 19,
+        "name": "reference",
+        "description": "Reference",
+        "link": "lookup-group",
+        "icon": "",
+        "parentId": 15
+    },
+    {
+        "id": 20,
+        "name": "risk_profiler",
+        "description": "Risk Profiler",
+        "link": "",
+        "icon": "",
+        "parentId": 15
+    },
+    {
+        "id": 21,
+        "name": "job",
+        "description": "Job",
+        "link": "lookup/risk-profiler/PEKERJAAN",
+        "icon": "",
+        "parentId": 20
+    },
+    {
+        "id": 22,
+        "name": "business_type",
+        "description": "Business Type",
+        "link": "lookup/risk-profiler/JENIS_USAHA",
+        "icon": "",
+        "parentId": 20
+    },
+    {
+        "id": 23,
+        "name": "holiday",
+        "description": "Holiday",
+        "link": "",
+        "icon": "",
+        "parentId": 15
+    },
+    {
+        "id": 24,
+        "name": "apupt",
+        "description": "APUPT",
+        "link": "apupt",
+        "icon": "",
+        "parentId": 15
+    },
+    {
+        "id": 25,
+        "name": "internal_name_risk",
+        "description": "Internal Name Risk",
+        "link": "internal-name-risk",
+        "icon": "",
+        "parentId": 15
+    },
+    {
+        "id": 26,
+        "name": "administration",
+        "description": "Administration",
+        "link": "",
+        "icon": "fa-user-secret",
+        "parentId": null
+    },
+    {
+        "id": 27,
+        "name": "user",
+        "description": "User",
+        "link": "user",
+        "icon": "",
+        "parentId": 26
+    },
+    {
+        "id": 28,
+        "name": "role",
+        "description": "Role",
+        "link": "role",
+        "icon": "",
+        "parentId": 26
+    },
+    {
+        "id": 29,
+        "name": "security_parameter",
+        "description": "Security Parameter",
+        "link": "",
+        "icon": "",
+        "parentId": 26
+    },
+    {
+        "id": 30,
+        "name": "access_matrix",
+        "description": "Access Matrix",
+        "link": "access-matrix",
+        "icon": "",
+        "parentId": 26
+    }
+]

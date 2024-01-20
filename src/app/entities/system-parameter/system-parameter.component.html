@@ -1,0 +1,87 @@
+<div class="card border-primary">
+    <div class="card-body">
+        <h5 class="card-title">System Parameter</h5>
+        <div>
+            <!-- SEARCH -->
+            <form>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label for="parameterInput">Parameter</label>
+                        <input type="text" class="form-control" id="parameterInput" [(ngModel)]='searchTerm.name' name="searchName"
+                            placeholder="Enter Parameter">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="valueInput">Value</label>
+                        <input type="text" class="form-control" id="valueInput" [(ngModel)]='searchTerm.value' name="searchValue"
+                            placeholder="Enter Value">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="descriptionInput">Description</label>
+                        <input type="text" class="form-control" id="descriptionInput" [(ngModel)]='searchTerm.description' name="searchDescription"
+                            placeholder="Enter Description">
+                    </div>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="submit" (click)="onFilter()" class="btn mr-2 btn-outline-success btn-sm">Search <i
+                            class="fa fa-search fa-lg"></i></button>
+                    <!-- <button type="button" (click)="resetFilter()" class="btn btn-outline-danger btn-sm">Reset <i class="fa fa-refresh fa-lg"></i></button>
+                <button type="button" class="btn btn-outline-primary btn-sm" (click)="open('addnew', null)">Addnew
+                    <i class="fa fa-plus-circle fa-lg"></i>
+                </button> -->
+                
+                </div>
+            </form>
+        </div>
+        <!-- <br>
+        <div class="btn-group" role="group" aria-label="Basic example">
+            
+            <button type="button" class="btn btn-outline-warning btn-sm">Preview
+                <i class="fa fa-search-plus fa-lg"></i>
+            </button>
+            <button type="button" class="btn btn-outline-info btn-sm">Upload
+                <i class="fa fa-upload fa-lg"></i>
+            </button>
+        </div>
+        <br> -->
+        <div style="padding: 15px 15px 15px 15px; ">
+            <table class="table table-sm table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Parameter</th>
+                        <th scope="col">Value</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Approval Status</th>
+                        <th scope="col">Latest Maker Date</th>
+                        <th scope="col">Latest Maker</th>
+                        <th scope="col">Latest Approver Date</th>
+                        <th scope="col">Latest Approver</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let systemParameter of systemParameterList">
+                        <td>
+                            <button type="button" (click)="open('edit', systemParameter)" class="btn btn-outline-warning btn-sm">
+                                <i class="fa fa-list"></i>
+                            </button>
+                        </td>
+                        <td>{{systemParameter.name}}</td>
+                        <td>{{systemParameter.value}}</td>
+                        <td>{{systemParameter.description}}</td>
+                        <td>{{systemParameter.status==1 ?'Active' : Inactive}}</td>
+                        <td>{{systemParameter.approvalStatusDescription }}</td>
+                        <td>{{systemParameter.latestSuggestion | date: 'dd-MM-yyyy' }}</td>
+                        <td>{{systemParameter.latestSuggestor }}</td>
+                        <td>{{systemParameter.latestApproval | date: 'dd-MM-yyyy' }}</td>
+                        <td>{{systemParameter.latestApprover }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <ngb-pagination size="sm" [collectionSize]="totalData" [(page)]="curPage" [maxSize]="totalRecord" (pageChange)="loadPage()"
+            [boundaryLinks]="true"></ngb-pagination>
+
+    </div>
+</div>

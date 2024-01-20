@@ -1,0 +1,90 @@
+<style>
+    input {
+        width: 100%;
+    }
+</style>
+<div class="modal-header" *ngIf="statusRec!=='View'">
+    <h4 class="modal-title">
+        <span class="badge badge-light" style="color:cornflowerblue">Supplier</span>
+    </h4>
+</div>
+<div class="modal-body">
+    <table class="table table-sm table-striped">
+        <tr>
+            <th colspan="2">
+                <button type="button" class="btn btn-outline-primary" style="color:green">
+                    Status <span class="badge badge-light" style="color:red"> {{statusRec}} </span>
+                    <span class="badge badge-light" style="color:purple"> {{viewMsg}}</span>
+                    <span class="sr-only">unread messages</span>
+                </button>
+            </th>
+        </tr>
+        <tr>
+            <td>Code</td>
+            <td><input type="text" disabled size="50%" [(ngModel)]=supplier.code></td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td><input type="text" maxlength="250" size="50%" [(ngModel)]=supplier.name></td>
+        </tr>
+        <tr>
+            <td>Address</td>
+            <td><input type="text" maxlength="250" size="50%" [(ngModel)]=supplier.address></td>
+        </tr>
+        <tr>
+            <td>City</td>
+            <td><input type="text" maxlength="250" size="50%" [(ngModel)]=supplier.city></td>
+        </tr>
+        <tr>
+            <td>Tax </td>
+            <td><input type="number" maxlength="250" size="50%" [(ngModel)]=supplier.tax></td>
+        </tr>
+        <tr>
+            <td>PIC Phone</td>
+            <td><input type="text" maxlength="250" size="50%" [(ngModel)]=supplier.picPhone></td>
+        </tr>
+        <tr>
+            <td>PIC Name</td>
+            <td><input type="text" maxlength="250" size="50%" [(ngModel)]=supplier.picName>  </td>
+        </tr>
+        <tr>
+            <td>Bank</td>
+            <td>
+                <select [(ngModel)]="bankSelected" class="form-control" 
+                    [ngModelOptions]="{standalone: true}">
+                    <option *ngFor="let bank of banks" [value]="bank.id">
+                        {{bank.name}}
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Bank Account No</td>
+            <td><input type="text" maxlength="250"  size="50%" [(ngModel)]=supplier.bankAccountNo>  </td>
+        </tr>
+        <tr>
+            <td>Bank Account Name</td>
+            <td><input type="text" maxlength="250" size="50%" [(ngModel)]=supplier.bankAccountName>  </td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>
+                <select [(ngModel)]="statusSelected" class="form-control" [ngModelOptions]="{standalone: true}">
+                    <option *ngFor="let status of statuses" [value]="status">
+                        {{status}}
+                    </option>
+                </select>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="modal-footer">
+    <div *ngIf="statusRec!=='View' ">
+        <button type="button" class="btn btn-outline-danger" (click)="save()">Save
+            <i class="fa fa-save fa-lg"></i>
+        </button>
+        <button type="button" class="btn btn-outline-dark" (click)="closeForm()">Close
+            <i class="fa fa-times fa-lg"></i>
+        </button>
+    </div>
+</div>
